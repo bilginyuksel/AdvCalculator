@@ -1,0 +1,20 @@
+Python Gelişim Projesi ( Hesap Makinesi)
+(Hazır kütüphaneler kullanılabilir.)
+(GUI isteniiyor.)
+Ekip 1.
+Hasancan, Bayram, Yasin (Hasancan-Manager)
+Ekip 2.
+Yuksel, Can, Bashir (Yuksel-Manager)
+
+Hesap Makinesi tasarlanırken windows hesap makinesi örnek alınabilir. Temel matematik işlemleri (+,-,/,*) ve devamlı işlem özelliği olmalıdır.
+1. Trigonometrik Fonksiyonlar olmalıdır.
+2. Üstel fonksiyonlar olmalıdır.
+3. Logaritmik fonksiyonlar olmalıdır. Kısacası bilimsel bir hesap makinesinin karşıladığı çoğu şey olmalıdır.
+4. İstatistiksel hesaplamalar yapılmalıdır. (Mod, Medyan, Standart Sapma, Aritmetik/Harmonik ortalama vb.)
+- 4. Özelliği sağlayabilmek için hesap makinesinin seçenekleri olmalıdır. Hesap makinesi dizi şeklinde inputlar alabilmelidir.
+5. Hesap makinesi dizi inputları için dizi toplamı, dizideki elemanlar çarpımı gibi işlemlerde olmalıdır.
+6. 2D diziler almalıdır. (Matrisler)nxn
+7. Matrisler için çarpma, transpoz alma, toplama, çıkarma ve matris çarpımı işlemleri yapılmalıdır.
+8. Karmaşık sayılar ve karmaşık sayıların işlemleri olmalıdır.
+9. Hesap makinesine formül kaydedilebilirmelidir ve aynı zamanda içinde bulunan bir kaç förmülde olmalıdır. (size kalmış)
+10. Hesap makinesinde decimal sayıları binary,hexadecimal,oktal gibi değerlere dönüştürülebilmelidir.
