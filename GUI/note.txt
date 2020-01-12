@@ -1,0 +1,2 @@
+While showing display to screen.
+In background use | to split numbers,operators,functions etc.
