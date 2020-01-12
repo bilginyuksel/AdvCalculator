@@ -15,6 +15,16 @@ class CalculatorView(QWidget):
 
         self.generalLayout = QHBoxLayout()
 
+        # Something is wrong with that
+        self.menu = QMenuBar (self)
+        self.calculator_type = self.menu.addMenu("Calculator")
+        self.scientific = self.calculator_type.addAction("Scientific")
+        self.vector_1d = self.calculator_type.addAction("1D Vector")
+        self.vector_2d = self.calculator_type.addAction("2D Vector")
+        self.complex_num = self.calculator_type.addAction("Complex Numbers")
+        self.calculator_help = self.menu.addMenu("Help")
+        about = self.calculator_help.addAction("About")
+
         self.main_layout = QVBoxLayout()
         self.input_layout = QVBoxLayout()
         self.__set_input_layout()
@@ -22,6 +32,7 @@ class CalculatorView(QWidget):
         self.__set_body_layout()
         label = QLabel("Scientific Calculator")
         label.setFont(QFont("Times",13))
+        self.main_layout.addWidget(self.menu)
         self.main_layout.addWidget(label)
         self.main_layout.addLayout(self.input_layout)
         self.main_layout.addLayout(self.body_layout)
@@ -33,10 +44,7 @@ class CalculatorView(QWidget):
         self.generalLayout.addLayout(self.memory_layout)
         self.setLayout(self.generalLayout)
 
-        # Something is wrong with that
-        self.menu = QMenuBar (self)
-        self.calculator_type = self.menu.addMenu("Calculator")
-        self.calculator_help = self.menu.addMenu("Help")
+        
 
         
         # self.is_functions_open = False
@@ -46,7 +54,7 @@ class CalculatorView(QWidget):
     def __set_window_config(self):
         self.setWindowTitle("Calculator")
         self.setWindowIcon(QIcon("assets/calculator.png"))
-        self.setWindowOpacity(0.8)
+        self.setWindowOpacity(0.9)
         self.setFont(QFont("Times",9))
         
 
