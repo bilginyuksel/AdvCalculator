@@ -32,30 +32,11 @@ According to that input type
 run the tokenizer which can tokenize this input type
 """
 
-# Basic Operators 
-class BaseOperator:
-    
-    @staticmethod
-    def add(self,val1,val2):
-        return val1+val2
-
-    @staticmethod
-    def multiply(self,val1,val2):
-        return val1*val2
-
-    @staticmethod
-    def substract(self,val1,val2):
-        return val1-val2
-
-    @staticmethod
-    def divide(self,val1,val2):
-        return val1/val2
 
 
-class BaseFunctionManager:
+class FunctionManager:
     
     def __init__(self):
-        super().__init__()
 
         self.functions = {
 
@@ -65,23 +46,61 @@ class BaseFunctionManager:
         return self.functions[func](val)
 
 
-class BaseOperatorManager:
+class OperatorManager:
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self,opSolver):
 
         self.operators = {
             # how to fill those operators
-            '+':BaseOperator.add,
-            '-':BaseOperator.substract,
-            '*':BaseOperator.multiply,
-            '/':BaseOperator.divide
+            '+':opSolver.add,
+            '-':opSolver.substract,
+            '*':opSolver.multiply,
+            '/':opSolver.divide
         }
 
     def solve(self, val1, val2, op):
         return self.operators[op](val1,val2)
 
 
+class BaseOperator:
+
+    def __init__(self):
+        # configure operators
+        self.name = "Base"
+
+
+    def add(self,*args):
+        raise NotImplementedError
+
+    def substract(self,*args):
+        raise NotImplementedError
+
+    def multiply(self,*args):
+        raise NotImplementedError
+
+    def divide(self,*args):
+        raise NotImplementedError
+
+class RealOperator(BaseOperator):
+
+    def add(self, *args):
+        return super().add(*args)
+
+    def substract(self, *args):
+        return super().substract(*args)(self):
+
+    def multiply(self, *args):
+        return super().multiply(*args)
+
+    def divide(self, *args):
+        return super().divide(*args)
+
+
+
+
+realManager = OperatorManager(RealOperator())
+realManager.solve(2,3,'+')
+# vectorManager = OperatorManager(VectorOperator())
 
 # o_manager = BaseOperatorManager()
 # result = o_manager.solve(value_list.pop(),value_list.pop(),op_list.pop())
@@ -97,61 +116,3 @@ class Formula:
     def tokenize(self,*args):
         pass
 
-
-"""
-i think it should be like this
-"""
-class RealNumber(NumberFormat):
-
-    def __check(self):
-        pass
-    
-    def check_format(self,val):
-        assert self.__check(val),"Value is not a real number."
-
-class RealNumberOperator(BaseOperator):
-    
-    def add(self):
-        pass
-
-    def sub(self):
-        pass
-
-class RealNumberFunction(BaseFunctionManager):
-    
-    def abs(self):
-        pass
-    def square(self):
-        pass
-
-class RealNumberManager(RealNumber):
-
-    def __init__(self, nu_value, nu_type='R+'):
-        super().__init__(nu_value, nu_type=nu_type)
-
-        operators = RealNumberOperator()
-        # It could be special functions, taking arguments bigger than len(1)
-        functions = RealNumberFunction("sad")
-
-        self.operator_dict = {
-            '+':operators.add,
-            '-':operators.sub
-        }
-
-        self.function_dict = {
-            'abs':functions.abs,
-            'square':functions.square
-        }
-
-
-    def make_operation(self,val1,val2,op):
-        self.check_format(val1)
-        self.check_format(val2)
-        return self.operator_dict[op](val1,val2)
-
-    def solve_function(self,*val,func):
-        for i in val : self.check_format(i) 
-        return self.function_dict[func](*val)
-
-
-rm = RealNumberManager(3)
