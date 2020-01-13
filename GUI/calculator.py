@@ -5,7 +5,8 @@ QPushButton,QLabel,QLineEdit,QTabWidget,QListWidget,QMenuBar)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon,QColor, QPalette, QFont
 from functools import partial
-from PyQt5 import QtGui,QtCore
+# from utils.input import InputController
+
 class CalculatorView(QWidget):
     
     def __init__(self, parent=None, flags=Qt.WindowFlags()):
@@ -43,13 +44,10 @@ class CalculatorView(QWidget):
         self.generalLayout.addLayout(self.main_layout)
         self.generalLayout.addLayout(self.memory_layout)
         self.setLayout(self.generalLayout)
-
-        
-
-        
         # self.is_functions_open = False
         self.__op_functions()
 
+        
     
     def __set_window_config(self):
         self.setWindowTitle("Calculator")
