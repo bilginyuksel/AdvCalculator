@@ -20,7 +20,7 @@ QPalette,
  QFont)
 from functools import partial
 
-from calculator_body import (ScientificCalculatorBody,
+from body import (ScientificCalculatorBody,
 VectorCalculatorBody,
 Vector2DCalculatorBody,
 ComplexCalculatorBody)
@@ -57,9 +57,6 @@ class CalculatorView(QWidget):
         self.setLayout(self.main)
 
     def __set_window_config(self):
-        self.setWindowTitle("Calculator")
-        self.setWindowIcon(QIcon("assets/calculator.png"))
-        self.setWindowOpacity(0.9)
         self.setFont(QFont("Times",9))
         
     def __set_head(self):
@@ -116,7 +113,9 @@ class GeneralCalcView(QTabWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setFont(QFont("Times",9))
-        self.setWindowOpacity(0.9)
+        self.setWindowOpacity(1)
+        self.setWindowIcon(QIcon("assets/calculator.png"))
+        self.setWindowTitle("Calculator")
         
         sci = CalculatorView(ctype=GeneralCalcView._scientific)
         comp = CalculatorView(ctype=GeneralCalcView._complex)
@@ -129,10 +128,10 @@ class GeneralCalcView(QTabWidget):
         vec2_controller = CalculatorController(vec2, None)
 
 
-        self.addTab(sci, GeneralCalcView._scientific)
-        self.addTab(comp, GeneralCalcView._vector1d)
-        self.addTab(vec1, GeneralCalcView._vector2d)
-        self.addTab(vec2, GeneralCalcView._complex)
+        self.addTab(sci, QIcon("assets/calculator.png"), GeneralCalcView._scientific)
+        self.addTab(vec1, QIcon("assets/vector1d.png"), GeneralCalcView._vector1d)
+        self.addTab(vec2, QIcon("assets/vector2d.png"), GeneralCalcView._vector2d)
+        self.addTab(comp, QIcon("assets/complex.png"), GeneralCalcView._complex)
    
         
 
