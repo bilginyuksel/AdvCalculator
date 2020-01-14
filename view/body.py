@@ -7,6 +7,7 @@ class BodyLayout:
     def __init__(self):
         super().__init__()
         self._create_numbers()
+        self._create_operators()
 
         self.numbers = {
             '0':self.btn_zero,
@@ -21,6 +22,22 @@ class BodyLayout:
             '9':self.btn_nine
         }
 
+        self.operators = {
+            '+':self.btn_add,
+            '-':self.btn_sub,
+            'x':self.btn_multip,
+            '/':self.btn_divide,
+            '(':self.btn_start_paranthesis,
+            ')':self.btn_end_paranthesis,
+            '+/-':self.btn_negative,
+            '.':self.btn_dot,
+            '=':self.btn_equal,
+            'CE':self.btn_clear,
+            '<-':self.btn_backspace
+        }
+
+       
+
     def _create_numbers(self):
         # @Numbers
         self.btn_zero = QPushButton("0")
@@ -34,6 +51,20 @@ class BodyLayout:
         self.btn_eight = QPushButton("8")
         self.btn_nine = QPushButton("9")
 
+    def _create_operators(self):
+        # @Operators
+        self.btn_add = QPushButton('+')
+        self.btn_sub = QPushButton('-')
+        self.btn_multip = QPushButton('*')
+        self.btn_divide = QPushButton('/')
+        self.btn_start_paranthesis = QPushButton("(")
+        self.btn_end_paranthesis = QPushButton(")")
+        self.btn_negative = QPushButton('+/-')
+        self.btn_dot = QPushButton(".")
+        self.btn_equal = QPushButton("=")
+        self.btn_clear = QPushButton('CE')
+        self.btn_backspace = QPushButton('<-')
+
     def _create_buttons(self):
         pass
 
@@ -46,7 +77,6 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         super().__init__()
         self._create_buttons()
 
-        self.addWidget(QLabel("Vector Calculator..."))
 
     def _create_buttons(self):
         return super()._create_buttons()
@@ -60,7 +90,6 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         super().__init__()
         self._create_buttons()
 
-        self.addWidget(QLabel("Vector 2D calculator"))
 
     def _create_buttons(self):
         return super()._create_buttons()
@@ -74,7 +103,6 @@ class ComplexCalculatorBody(QVBoxLayout, BodyLayout):
         super().__init__()
         self._create_buttons()
 
-        self.addWidget(QLabel("Complex Calculator."))
 
     def _create_buttons(self):
         return super()._create_buttons()
@@ -93,21 +121,6 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
         self.special_numbers = {
             'pi':self.btn_pi,
             'e':self.btn_e
-        }
-
-
-        self.operators = {
-            '+':self.btn_add,
-            '-':self.btn_sub,
-            'x':self.btn_multip,
-            '/':self.btn_divide,
-            '(':self.btn_start_paranthesis,
-            ')':self.btn_end_paranthesis,
-            '+/-':self.btn_negative,
-            '.':self.btn_dot,
-            '=':self.btn_equal,
-            'CE':self.btn_clear,
-            '<-':self.btn_backspace
         }
 
         self.basic_functions = {
@@ -140,19 +153,6 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
         # @Special Numbers
         self.btn_pi = QPushButton("pi")
         self.btn_e = QPushButton('e')
-
-        # @Operators
-        self.btn_add = QPushButton('+')
-        self.btn_sub = QPushButton('-')
-        self.btn_multip = QPushButton('*')
-        self.btn_divide = QPushButton('/')
-        self.btn_start_paranthesis = QPushButton("(")
-        self.btn_end_paranthesis = QPushButton(")")
-        self.btn_negative = QPushButton('+/-')
-        self.btn_dot = QPushButton(".")
-        self.btn_equal = QPushButton("=")
-        self.btn_clear = QPushButton('CE')
-        self.btn_backspace = QPushButton('<-')
 
         # @Basic Functions
         self.btn_onedivx = QPushButton("1/x")

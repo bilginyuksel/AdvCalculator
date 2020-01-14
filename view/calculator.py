@@ -51,6 +51,10 @@ class CalculatorView(QWidget):
         self.tab_result = ctype
         self.__configuration()
 
+    def updateExpression(self,expression):
+        self.expression.setText(expression)
+    def updateResult(self,result):
+        self.result.setText(result)
     
     def __configuration(self):
         self.main = QHBoxLayout()
@@ -103,9 +107,7 @@ class CalculatorView(QWidget):
         self.left.addWidget(label)
         self.left.addLayout(self.head)
         self.left.addLayout(self.body)
-
-   
-    
+ 
 
 class GeneralCalcView(QTabWidget):
 

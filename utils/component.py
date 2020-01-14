@@ -31,12 +31,12 @@ class ComponentOperator:
 
 class ComponentValue:
 
-    __pi = (22/7)
-    __e = (10) 
+    _pi = (22/7)
+    _e = (10) 
     
     def __init__(self,val):
         self.val = val
-        self.special_val = [ComponentValue.__pi,ComponentValue.__e]
+        self.special_val = [ComponentValue._pi,ComponentValue._e]
 
         self.type = "basic"
         if val in self.special_val: self.type = "special"
@@ -51,9 +51,6 @@ class ComponentValue:
         return self.val
 
 class ComponentController:
-
-    def __init__(self):
-        super().__init__()
 
     def createFunctionComponent(self,fun,val):
         return ComponentFunction(fun,val)
@@ -76,22 +73,18 @@ class InputController:
         self.ttype = ttype
 
 
-    def addFunction(self,func):
+    def typeFunction(self,func):
         self.display.pop() # delete last element which is a value
         # than add the function-- because value goes into function
         self.display.append(self.compController.createFunctionComponent(func,self.currentInput))
 
-    def isNumber(self):
-        pass
+    def typeValue(self,val):
+        self.display.append(self.compController.createValueComponent(val))
 
-    def isOperator(self):
-        pass
+    def typeOperator(self,op):
+        self.display.append(self.compController.createOperatorComponent(op))
 
-    def isFunction(self):
-        pass
 
-    def isSpecialNumber(self):
-        pass
 
     def delete(self):
         """
@@ -147,5 +140,19 @@ postfix
 --- when stack pop's operator
 do the process.
 val1, val2, process.
+
+
+---------------------
+[3, +, sin(120)]
+[<class ComponentValue>, <class ComponentOperator>, <class ComponentFunction>]
+if isinstance(ComponentValue):
+    a = comp.value -> ([1,2,3,4],53,[[1,2],[2,3]],5+3i)
+    Operator(comp.type).compute(val1,val2) -> 'complex','vector','real'
+
+ComponentFunction('sin','3+5*20') -> basic
+    comp.expression = comp.resolve(comp.expression)
+    funcManager.solve(comp.func,comp.expression)
+ComponentFunction('mod',['5','7']) -> advanced
+ComponentFunction('x^y',[5,3]) -> advanced = 125
 
 """

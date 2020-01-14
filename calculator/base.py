@@ -59,6 +59,7 @@ class OperatorManager:
         }
 
     def solve(self, val1, val2, op):
+        assert (not op in self.operators.keys()), "You can't solve anything with paranthesis !"
         return self.operators[op](val1,val2)
 
 
