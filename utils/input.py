@@ -3,25 +3,49 @@ class ComponentFunction:
     
     def __init__(self,fun,val):
         self.fun = fun
-        self.val = val
+        self.expression = val
+
+        # One param functions 
+        # example : sin(x), cos(x), abs(x)
+        self.type = "basic"
+
+        # Multi param functions
+        # example : x^y, modx,y ..
+        if type(self.val) == list: self.type = "advanced"
+
    
     def __str__(self):
-        return "{0}({1})".format(self.fun,self.val)
+        if self.type =="basic": return "{0}({1})".format(self.fun,self.expression)
     
 class ComponentOperator:
     
     def __init__(self,op):
-        super().__init__()
         self.op = op
+        #precedence...
+    
+    def __len__(self):
+        return 1
+
     def __str__(self):
         return self.op
 
 class ComponentValue:
+
+    __pi = (22/7)
+    __e = (10) 
     
     def __init__(self,val):
-        super().__init__()
-
         self.val = val
+        self.special_val = [ComponentValue.__pi,ComponentValue.__e]
+
+        self.type = "basic"
+        if val in self.special_val: self.type = "special"
+
+    def update(self,val):
+        self.val = val
+
+    def __len__(self):
+        return len(str(self.val))
 
     def __str__(self):
         return self.val
@@ -44,8 +68,8 @@ class ComponentController:
 class InputController:
     
     def __init__(self):
-        super().__init__()
 
+        self.open_paranthesis = 0
         self.currentInput = None
         self.display = []
         self.compController = ComponentController()
@@ -93,7 +117,7 @@ class InputController:
 
 inp = InputController()
 
-inp.display.append(Func(3))
+inp.display.append(ComponentFunction("abs","10/32*5"))
 for i in inp.display:
     print(i)
 
