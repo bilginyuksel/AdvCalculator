@@ -1,32 +1,53 @@
 import sys
-from PyQt5.QtWidgets import (QStyle, QWidget,QMainWindow,
-QApplication,QVBoxLayout,QGridLayout,QHBoxLayout,
-QPushButton,QLabel,QLineEdit,QTabWidget,QListWidget,QMenuBar,QStackedLayout)
+from PyQt5.QtWidgets import (QStyle,
+ QWidget,
+ QMainWindow,
+QApplication,
+QVBoxLayout,
+QGridLayout,
+QHBoxLayout,
+QPushButton,
+QLabel,
+QLineEdit,
+QTabWidget,
+QListWidget,
+QMenuBar,
+QStackedLayout)
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon,QColor, QPalette, QFont
+from PyQt5.QtGui import (QIcon,
+QColor,
+QPalette,
+ QFont)
 from functools import partial
 
-from vector1d import ScientificCalculatorBody,VectorCalculatorBody,Vector2DCalculatorBody,ComplexCalculatorBody
+from calculator_body import (ScientificCalculatorBody,
+VectorCalculatorBody,
+Vector2DCalculatorBody,
+ComplexCalculatorBody)
 
 class CalculatorView(QWidget):
     
-    def __init__(self, parent=None, flags=Qt.WindowFlags()):
+    def __init__(self, ctype, parent=None, flags=Qt.WindowFlags() ):
         super().__init__(parent=parent, flags=flags)
         self.__set_window_config()
         self.CTYPE = {
             "SCIENTIFIC":ScientificCalculatorBody(),
-            "VECTOR1D":VectorCalculatorBody(),
-            "VECTOR2D":Vector2DCalculatorBody(),
+            "VECTOR 1D":VectorCalculatorBody(),
+            "VECTOR 2D":Vector2DCalculatorBody(),
             "COMPLEX":ComplexCalculatorBody()
         }
         
+        self.tab_result = ctype
+        self.__configuration()
+
+    
+    def __configuration(self):
         self.main = QHBoxLayout()
         self.left = QVBoxLayout()
         self.right= QVBoxLayout()
         self.head = QVBoxLayout()
-        self.body = ScientificCalculatorBody()
+        self.body = self.CTYPE[self.tab_result.upper()]
 
-        self.__set_menu_bar()
         self.__set_head()
         self.__set_right()
         self.__set_left()
@@ -35,38 +56,12 @@ class CalculatorView(QWidget):
         self.main.addLayout(self.right)
         self.setLayout(self.main)
 
-        
-        
-        print("Numbers\n",self.body.numbers)
-        print("Special Numbers\n",self.body.special_numbers)
-        print("Operators\n",self.body.operators)
-        print("Basic Functions\n",self.body.basic_functions)
-        print("Advanced Functions\n",self.body.advanced_functions)
-
-    
-
     def __set_window_config(self):
         self.setWindowTitle("Calculator")
         self.setWindowIcon(QIcon("assets/calculator.png"))
         self.setWindowOpacity(0.9)
         self.setFont(QFont("Times",9))
         
-    def __set_menu_bar(self):
-        self.menu = QMenuBar (self)
-        calculator = self.menu.addMenu("Calculator")
-        scientific = calculator.addAction("Scientific")
-        vector_1d = calculator.addAction("1D Vector")
-        vector_2d = calculator.addAction("2D Vector")
-        complex_num = calculator.addAction("Complex Numbers")
-
-        calculator_help = self.menu.addMenu("Help")
-        about = calculator_help.addAction("About")
-
-        scientific.triggered.connect(partial(self.__update_body,self.CTYPE['SCIENTIFIC']))
-        vector_1d.triggered.connect(partial(self.__update_body,self.CTYPE['VECTOR1D']))
-        vector_2d.triggered.connect(partial(self.__update_body,self.CTYPE['VECTOR2D']))
-        complex_num.triggered.connect(partial(self.__update_body,self.CTYPE['COMPLEX']))
-
     def __set_head(self):
         self.line_input = QLineEdit("0")
         self.line_input.setReadOnly(True)
@@ -97,18 +92,49 @@ class CalculatorView(QWidget):
         self.right.addWidget(self.right_tabs)
 
     def __set_left(self):
-        label = QLabel("Scientific Calculator")
+        label = QLabel(self.tab_result)
         label.setFont(QFont("default",10))
-        self.left.addWidget(self.menu)
         self.left.addWidget(label)
         self.left.addLayout(self.head)
         self.left.addLayout(self.body)
 
     def __update_body(self,body):
         self.body = body
+
+
+class CalculatorController:
+    def __init__(self, view, model):
+        self._view = view
+        self._model = model
     
 
+class GeneralCalcView(QTabWidget):
+    _scientific = "Scientific"
+    _complex = "Complex"
+    _vector1d = "Vector 1d"
+    _vector2d = "Vector 2d"
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.setFont(QFont("Times",9))
+        self.setWindowOpacity(0.9)
+        
+        sci = CalculatorView(ctype=GeneralCalcView._scientific)
+        comp = CalculatorView(ctype=GeneralCalcView._complex)
+        vec1 = CalculatorView(ctype=GeneralCalcView._vector1d)
+        vec2 = CalculatorView(ctype=GeneralCalcView._vector2d)
 
+        sci_controller  = CalculatorController(sci, None)
+        comp_controller = CalculatorController(comp, None)
+        vec1_controller = CalculatorController(vec1, None)
+        vec2_controller = CalculatorController(vec2, None)
+
+
+        self.addTab(sci, GeneralCalcView._scientific)
+        self.addTab(comp, GeneralCalcView._vector1d)
+        self.addTab(vec1, GeneralCalcView._vector2d)
+        self.addTab(vec2, GeneralCalcView._complex)
+   
+        
 
 
 
@@ -130,6 +156,6 @@ if __name__ == '__main__':
     palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
     palette.setColor(QPalette.HighlightedText, Qt.black)
     app.setPalette(palette)
-    view = CalculatorView()
+    view = GeneralCalcView()
     view.show()
     sys.exit(app.exec_())

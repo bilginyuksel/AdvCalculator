@@ -9,10 +9,17 @@ class VectorCalculatorBody(QVBoxLayout):
         self.addWidget(QLabel("Vector Calculator..."))
 
 class Vector2DCalculatorBody(QVBoxLayout):
-    pass
+    def __init__(self):
+        super().__init__()
+
+        self.addWidget(QLabel("Vector 2D calculator"))
 
 class ComplexCalculatorBody(QVBoxLayout):
-    pass
+    
+    def __init__(self):
+        super().__init__()
+
+        self.addWidget(QLabel("Complex Calculator."))
     
 
 class ScientificCalculatorBody(QVBoxLayout):
