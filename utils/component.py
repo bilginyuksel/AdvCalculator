@@ -11,7 +11,7 @@ class ComponentFunction:
 
         # Multi param functions
         # example : x^y, modx,y ..
-        if type(self.val) == list: self.type = "advanced"
+        if type(self.expression) == list: self.type = "advanced"
 
    
     def __str__(self):
@@ -67,12 +67,13 @@ class ComponentController:
 
 class InputController:
     
-    def __init__(self):
+    def __init__(self,ttype = "Scientific"):
 
         self.open_paranthesis = 0
         self.currentInput = None
         self.display = []
         self.compController = ComponentController()
+        self.ttype = ttype
 
 
     def addFunction(self,func):
@@ -98,28 +99,18 @@ class InputController:
         321 -> it doesnt matter 32->3 -- you can delete like this
         but if you are deleting a function, that means you have to delete all
         """
-        if self.currentInput == self.isFunction():
-            self.display.pop()
-
-        elif type(self.currentInput) == float:
-            currNumber = self.display[-1]
-            # delete one element from currNumber
-            if len(currNumber)>0:
-                currNumber=currNumber[:len(currNumber)-1]
-            
-            self.display.pop()
-            if len(currNumber)>0: self.display.append(self.compController.createValueComponent(currNumber))
+        pass
 
     def cls(self):
         self.currentInput = None
         self.display = ""
 
 
-inp = InputController()
+# inp = InputController()
 
-inp.display.append(ComponentFunction("abs","10/32*5"))
-for i in inp.display:
-    print(i)
+# inp.display.append(ComponentFunction("abs","10/32*5"))
+# for i in inp.display:
+#     print(i)
 
 
 """
