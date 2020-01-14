@@ -1,7 +1,16 @@
 import sys
+"""
+I use this function sys.path.append because 
+I have an import issue and i can't solve it without 
+sys.path hack.. 
+I wanted to use from ..utils.component import <stufff>
+But because of the problems that i've writed at the top,
+with sys hack issue solved as : from utils.component import <stuff>
+"""
+sys.path.append("..")
+
 from PyQt5.QtWidgets import (QStyle,
- QWidget,
- QMainWindow,
+QWidget,
 QApplication,
 QVBoxLayout,
 QGridLayout,
@@ -11,20 +20,21 @@ QLabel,
 QLineEdit,
 QTabWidget,
 QListWidget,
-QMenuBar,
-QStackedLayout)
+QMenuBar)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import (QIcon,
 QColor,
 QPalette,
- QFont)
- 
+QFont)
+
 from functools import partial
 from body import (ScientificCalculatorBody,
 VectorCalculatorBody,
 Vector2DCalculatorBody,
 ComplexCalculatorBody)
 from controller import CalculatorController
+from utils.component import InputController
+
 
 class CalculatorView(QWidget):
     
@@ -61,33 +71,31 @@ class CalculatorView(QWidget):
         self.setFont(QFont("Times",9))
         
     def __set_head(self):
-        self.line_input = QLineEdit("0")
-        self.line_input.setReadOnly(True)
-        self.line_input.setAlignment(Qt.AlignRight)
-        self.line_input.setFont(QFont("Consolas",13,QFont.Bold))
-        self.head.addWidget(self.line_input)
+        self.expression = QLineEdit("0")
+        self.expression.setReadOnly(True)
+        self.expression.setAlignment(Qt.AlignRight)
+        self.expression.setFont(QFont("Consolas",13,QFont.Bold))
+        
+        self.result = QLabel('0')
+        self.result.setAlignment(Qt.AlignRight)
+        self.result.setFont(QFont("Consolas",13))
 
-        # Always update the current operation here.
-        h_box = QHBoxLayout()
-        # self.functions = QPushButton("Functions",self)
-        # self.functions.clicked.connect(self.__op_functions)
-        # h_box.addWidget(self.functions)
-        self.ghost_compute = QLabel('0')
-        self.ghost_compute.setAlignment(Qt.AlignRight)
-        self.ghost_compute.setFont(QFont("Consolas",13))
-        h_box.addWidget(self.ghost_compute)
-        self.head.addLayout(h_box)
+        self.head.addWidget(self.expression)
+        self.head.addWidget(self.result)
 
     def __set_right(self):
-        self.right_tabs = QTabWidget()
-        self.list_memory_history = QListWidget()
-        self.list_memory_history.addItem("No element on history.")
-        self.list_memory_formulas = QListWidget()
-        self.list_memory_formulas.addItem("No element on formulas.")
+        rtab = QTabWidget()
 
-        self.right_tabs.addTab(self.list_memory_history,"History")
-        self.right_tabs.addTab(self.list_memory_formulas,"Formulas")
-        self.right.addWidget(self.right_tabs)
+        self.history = QListWidget()
+        self.formula = QListWidget()
+
+        self.history.addItem("No element on history.")
+        self.formula.addItem("No element on formulas.")
+
+        rtab.addTab(self.history,"History")
+        rtab.addTab(self.formula,"Formulas")
+
+        self.right.addWidget(rtab)
 
     def __set_left(self):
         label = QLabel(self.tab_result)
@@ -97,16 +105,15 @@ class CalculatorView(QWidget):
         self.left.addLayout(self.body)
 
    
-
-
-
     
 
 class GeneralCalcView(QTabWidget):
+
     _scientific = "Scientific"
     _complex = "Complex"
     _vector1d = "Vector 1d"
     _vector2d = "Vector 2d"
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setFont(QFont("Times",9))
@@ -119,10 +126,10 @@ class GeneralCalcView(QTabWidget):
         vec1 = CalculatorView(ctype=GeneralCalcView._vector1d)
         vec2 = CalculatorView(ctype=GeneralCalcView._vector2d)
 
-        sci_controller  = CalculatorController(sci, None)
-        comp_controller = CalculatorController(comp, None)
-        vec1_controller = CalculatorController(vec1, None)
-        vec2_controller = CalculatorController(vec2, None)
+        sci_controller  = CalculatorController(sci, InputController(GeneralCalcView._scientific))
+        comp_controller = CalculatorController(comp, InputController(GeneralCalcView._complex))
+        vec1_controller = CalculatorController(vec1, InputController(GeneralCalcView._vector1d))
+        vec2_controller = CalculatorController(vec2, InputController(GeneralCalcView._vector2d))
 
 
         self.addTab(sci, QIcon("assets/calculator.png"), GeneralCalcView._scientific)

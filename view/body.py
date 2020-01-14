@@ -2,32 +2,11 @@ from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,
 from PyQt5.QtCore import Qt
 import sys
 
-class VectorCalculatorBody(QVBoxLayout):
+class BodyLayout:
+
     def __init__(self):
         super().__init__()
-
-        self.addWidget(QLabel("Vector Calculator..."))
-
-class Vector2DCalculatorBody(QVBoxLayout):
-    def __init__(self):
-        super().__init__()
-
-        self.addWidget(QLabel("Vector 2D calculator"))
-
-class ComplexCalculatorBody(QVBoxLayout):
-    
-    def __init__(self):
-        super().__init__()
-
-        self.addWidget(QLabel("Complex Calculator."))
-    
-
-class ScientificCalculatorBody(QVBoxLayout):
-    
-    def __init__(self):
-        super().__init__()
-
-        self.create_buttons()
+        self._create_numbers()
 
         self.numbers = {
             '0':self.btn_zero,
@@ -41,6 +20,75 @@ class ScientificCalculatorBody(QVBoxLayout):
             '8':self.btn_eight,
             '9':self.btn_nine
         }
+
+    def _create_numbers(self):
+        # @Numbers
+        self.btn_zero = QPushButton("0")
+        self.btn_one = QPushButton("1")
+        self.btn_two = QPushButton("2")
+        self.btn_three = QPushButton("3")
+        self.btn_four = QPushButton("4")
+        self.btn_five = QPushButton("5")
+        self.btn_six = QPushButton("6")
+        self.btn_seven = QPushButton("7")
+        self.btn_eight = QPushButton("8")
+        self.btn_nine = QPushButton("9")
+
+    def _create_buttons(self):
+        pass
+
+    def _set_layout(self):
+        pass
+
+
+class VectorCalculatorBody(QVBoxLayout, BodyLayout):
+    def __init__(self):
+        super().__init__()
+        self._create_buttons()
+
+        self.addWidget(QLabel("Vector Calculator..."))
+
+    def _create_buttons(self):
+        return super()._create_buttons()
+
+    def _set_layout(self):
+        return super()._set_layout()
+    
+
+class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
+    def __init__(self):
+        super().__init__()
+        self._create_buttons()
+
+        self.addWidget(QLabel("Vector 2D calculator"))
+
+    def _create_buttons(self):
+        return super()._create_buttons()
+
+    def _set_layout(self):
+        return super()._set_layout()
+
+class ComplexCalculatorBody(QVBoxLayout, BodyLayout):
+    
+    def __init__(self):
+        super().__init__()
+        self._create_buttons()
+
+        self.addWidget(QLabel("Complex Calculator."))
+
+    def _create_buttons(self):
+        return super()._create_buttons()
+
+    def _set_layout(self):
+        return super()._set_layout()
+    
+
+class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
+    
+    def __init__(self):
+        super().__init__()
+        self._create_buttons()
+
 
         self.special_numbers = {
             'pi':self.btn_pi,
@@ -86,20 +134,10 @@ class ScientificCalculatorBody(QVBoxLayout):
         }
 
     
-        self.set_layout()
+        self._set_layout()
 
-    def create_buttons(self):
-        # @Numbers
-        self.btn_zero = QPushButton("0")
-        self.btn_one = QPushButton("1")
-        self.btn_two = QPushButton("2")
-        self.btn_three = QPushButton("3")
-        self.btn_four = QPushButton("4")
-        self.btn_five = QPushButton("5")
-        self.btn_six = QPushButton("6")
-        self.btn_seven = QPushButton("7")
-        self.btn_eight = QPushButton("8")
-        self.btn_nine = QPushButton("9")
+    def _create_buttons(self):
+        # @Special Numbers
         self.btn_pi = QPushButton("pi")
         self.btn_e = QPushButton('e')
 
@@ -137,7 +175,7 @@ class ScientificCalculatorBody(QVBoxLayout):
         self.btn_xtoy = QPushButton('x^y')
         self.btn_rand = QPushButton('rand')
    
-    def set_layout(self):
+    def _set_layout(self):
         
         first_five_buttons = QHBoxLayout()
         first_five_buttons.addWidget(self.basic_functions['sin'])
