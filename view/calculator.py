@@ -18,12 +18,13 @@ from PyQt5.QtGui import (QIcon,
 QColor,
 QPalette,
  QFont)
+ 
 from functools import partial
-
 from body import (ScientificCalculatorBody,
 VectorCalculatorBody,
 Vector2DCalculatorBody,
 ComplexCalculatorBody)
+from controller import CalculatorController
 
 class CalculatorView(QWidget):
     
@@ -95,14 +96,10 @@ class CalculatorView(QWidget):
         self.left.addLayout(self.head)
         self.left.addLayout(self.body)
 
-    def __update_body(self,body):
-        self.body = body
+   
 
 
-class CalculatorController:
-    def __init__(self, view, model):
-        self._view = view
-        self._model = model
+
     
 
 class GeneralCalcView(QTabWidget):
