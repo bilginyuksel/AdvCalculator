@@ -73,15 +73,25 @@ class InputController:
         self.ttype = ttype
 
 
-    def typeFunction(self,func):
-        self.display.pop() # delete last element which is a value
-        # than add the function-- because value goes into function
-        self.display.append(self.compController.createFunctionComponent(func,self.currentInput))
+    def typeFunction(self,func, expression):
+        # Rules.
+        self.display.append(self.compController.createFunctionComponent(func, expression))
 
     def typeValue(self,val):
-        self.display.append(self.compController.createValueComponent(val))
+        """
+        Right now this method needs to control stack.
+        if last add element is a ComponentValue, delete last element frorm stack.
+        After deleting update the value of it then add to stack.
+        """
+        if isinstance(self.display[-1],ComponentValue):
+            # I don't what data type we are getting.
+            value = self.display.pop()
+            value.update(float(str(value)+val))
+            self.display.append(value)
+        else: self.display.append(self.compController.createValueComponent(val))
 
     def typeOperator(self,op):
+        # Rules.
         self.display.append(self.compController.createOperatorComponent(op))
 
 
