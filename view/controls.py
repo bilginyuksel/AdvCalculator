@@ -1,18 +1,15 @@
 from functools import partial
 
+
 class CalculatorController:
     
     def __init__(self, view, model):
         self._view = view
         self._model = model
-
-        self.temp = ""
-
-        print("Created controller for ",self._view.tab_result,"..")
-        print("Input controller type ",self._model.ttype)
-
         self._link_buttons()
 
+        # print("Created controller for ",self._view.tab_result,"..")
+        # print("Input controller type ",self._model.ttype)
 
     def _link_buttons(self):
         # @@Numbers
@@ -25,8 +22,8 @@ class CalculatorController:
         self._view.body.operators['/'].clicked.connect(partial(self._op_base,'/'))
         self._view.body.operators['x'].clicked.connect(partial(self._op_base,'x'))
         self._view.body.operators['+/-'].clicked.connect(self._op_neg)
-        self._view.body.operators['('].clicked.connect(self._op_pstart)
-        self._view.body.operators[')'].clicked.connect(self._op_pend)
+        self._view.body.operators['('].clicked.connect(partial(self._op_paranthesis,'('))
+        self._view.body.operators[')'].clicked.connect(partial(self._op_paranthesis,')'))
         self._view.body.operators['='].clicked.connect(self._op_equ)
 
 
@@ -38,31 +35,34 @@ class CalculatorController:
 
     def _num_any(self,obj_name):
         self._model.typeValue(obj_name)
+        self._view.updateExpression(self._model.getDisplayValue())
+        self._view.updateResult(obj_name)
 
     def _op_base(self,op):
-        # self._model.typeOperator()
-        print(op)
-        pass
+        self._model.typeOperator(op)
+        self._view.updateExpression(self._model.getDisplayValue())
 
-    def _op_pstart(self):
-        # self._model.typeOperator()
-        pass
+    def _op_paranthesis(self,paranthesis):
+        self._model.typeParanthesis(paranthesis)
+        self._view.updateExpression(self._model.getDisplayValue())
 
-    def _op_pend(self):
-        # self._model.typeOperator()
-        pass
 
     def _op_neg(self):
-        # self.model.typeValue()
-        pass
+        # make minus we need to integrate this some other way
+        val = self._model.negatiate()
+        self._view.updateExpression(self._model.getDisplayValue())
+        self._view.updateResult(val)
 
     def _func_basic(self,func):
-        print(func)
-        # Wait for expression
-        pass
+        expr = []
+        # fill expression 
+        self._model.typeFunction(func,expr)
+        self._view.updateExpression(self._model.getDisplayValue())
+        self._view.updateResult(expr)
 
     def _op_equ(self):
         # Solve the equation with the help of tokenizer
-        pass
+        print(self._model.getDisplayValue())
+
         
  

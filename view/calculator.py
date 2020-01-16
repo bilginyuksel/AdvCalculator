@@ -32,7 +32,7 @@ from body import (ScientificCalculatorBody,
 VectorCalculatorBody,
 Vector2DCalculatorBody,
 ComplexCalculatorBody)
-from controller import CalculatorController
+from controls import CalculatorController
 from utils.component import InputController
 
 
