@@ -1,10 +1,45 @@
+from utils.component import ComponentFunction,ComponentOperator,ComponentParanthesis,ComponentValue
+from calculator.functions.realfunctions import RealFunctions
+from calculator.real import Real
 def vector1d(content):
     # Function properties
     return content
 def real(content):
-    # Function properties
-    # shutting yard algorithm
-    return content
+    valStack = []
+    opStack = []
+    for item in content:
+        if(isinstance(item,ComponentValue)):
+            valStack.append(item.val)
+        elif(isinstance(item,ComponentFunction)):
+            funcVal = real(item.expression)
+            rf = RealFunctions(item.func,funcVal)
+            valStack.append(rf.solve)
+        elif(isinstance(item,ComponentParanthesis)):
+            if(item.__str__ == '('):
+                opStack.append(item.__str__)
+            else:
+                while opStack[-1]!='(':
+                    op = opStack.pop()
+                    rightVal = valStack.pop()
+                    leftVal = valStack.pop()
+                    r = Real(op)
+                    valStack.append(r.solve(leftVal,rightVal))
+                opStack.pop()
+        elif(isinstance(item,ComponentOperator)):
+            while len(opStack)>0 and ComponentOperator(opStack[-1]).precedence>=item.precedence:
+                op = opStack.pop()
+                rightVal = valStack.pop()
+                leftVal = valStack.pop()
+                r = Real(op)
+                valStack.append(r.solve(leftVal,rightVal))
+            opStack.append(item.__str__)
+    while len(opStack)>0:
+        op = opStack.pop()
+        rightVal = valStack.pop()
+        leftVal = valStack.pop()
+        r = Real(op)
+        valStack.append(r.solve(leftVal,rightVal))
+    return valStack.pop()
 
 class Tokenizer:
     
