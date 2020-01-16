@@ -3,8 +3,9 @@ class ComponentFunction:
     
     def __init__(self,fun,val):
         self.fun = fun
-        self.expression = val
+        self.expression = []
 
+        self.finito = False
         # One param functions 
         # example : sin(x), cos(x), abs(x)
         self.type = "basic"
@@ -14,8 +15,20 @@ class ComponentFunction:
         if type(self.expression) == list: self.type = "advanced"
 
    
+    def update(self,val):
+        self.expression.append(val)
+
+    def close(self):
+        self.finito = True
+
     def __str__(self):
-        if self.type =="basic": return "{0}({1})".format(self.fun,self.expression)
+        ex = ""
+        for i in self.expression: ex+=str(i)
+        if not self.finito:
+            return "{0}({1}".format(self.fun,ex)
+        else:
+            return "{0}({1})".format(self.fun,ex)
+        # if self.type =="basic": return "{0}({1})".format(self.fun,self.expression)
 
 class ComponentParanthesis:
 
@@ -102,10 +115,15 @@ class InputController:
         self.display = []
         self.compController = ComponentController()
         self.ttype = ttype
+        self.isFunction = False
 
     def typeFunction(self,func, expression):
-        self.display.append(self.compController.createFunctionComponent(func, expression))
-
+        if len(self.display)>0 and (isinstance(self.display[-1],ComponentOperator) or self.display[-1] == '(') : 
+            self.display.append(self.compController.createFunctionComponent(func, expression))
+            self.isFunction = True
+        elif len(self.display)==0:
+            self.display.append(self.compController.createFunctionComponent(func,expression))
+            self.isFunction = True
     def negatiate(self):
         if len(self.display)>0 and isinstance(self.display[-1],ComponentValue):
             return self.display[-1].update(int(str(self.display[-1]))*-1)
@@ -116,26 +134,42 @@ class InputController:
         if last add element is a ComponentValue, delete last element frorm stack.
         After deleting update the value of it then add to stack.
         """
-        if len(self.display)>0 and isinstance(self.display[-1],ComponentValue):            
-            curr_value = self.display[-1] # Takes object reference
-            curr_value.update(int(str(curr_value)+val))
-            # self.display[-1].update(int(str(self.display[-1])+val))
-        else: self.display.append(self.compController.createValueComponent(val))
+        if self.isFunction:
+            if len(self.display[-1].expression)>0 and isinstance(self.display[-1].expression[-1],ComponentValue):            
+                curr_value = self.display[-1].expression[-1] # Takes object reference
+                curr_value.update(int(str(curr_value)+val))
+                # self.display[-1].update(int(str(self.display[-1])+val))
+            else: self.display[-1].expression.append(self.compController.createValueComponent(val))
+        else:
+            if len(self.display)>0 and isinstance(self.display[-1],ComponentValue):            
+                curr_value = self.display[-1] # Takes object reference
+                curr_value.update(int(str(curr_value)+val))
+                # self.display[-1].update(int(str(self.display[-1])+val))
+            else: self.display.append(self.compController.createValueComponent(val))
         
 
     def typeOperator(self,op):
-        if len(self.display)>0 and not isinstance(self.display[-1],ComponentOperator) and str(self.display[-1])!=ComponentParanthesis._start: self.display.append(self.compController.createOperatorComponent(op))
+        if self.isFunction:
+            if len(self.display[-1].expression)>0 and not isinstance(self.display[-1].expression[-1],ComponentOperator): 
+                self.display[-1].expression.append(self.compController.createOperatorComponent(op))
+        else:
+            if len(self.display)>0 and not isinstance(self.display[-1],ComponentOperator) and str(self.display[-1])!=ComponentParanthesis._start: self.display.append(self.compController.createOperatorComponent(op))
         
     def typeParanthesis(self,paranthesis):
-        if paranthesis == ComponentParanthesis._start and len(self.display) ==0: 
-            self.open_paranthesis += 1
-            self.display.append(self.compController.createParanthesisComponent(paranthesis))
-        elif paranthesis == ComponentParanthesis._start and len(self.display)>0 and isinstance(self.display[-1],ComponentOperator):
-            self.open_paranthesis += 1
-            self.display.append(self.compController.createParanthesisComponent(paranthesis))
-        elif paranthesis == ComponentParanthesis._end and len(self.display)>0 and self.open_paranthesis>0 and not isinstance(self.display[-1],ComponentOperator):
-            self.open_paranthesis -= 1
-            self.display.append(self.compController.createParanthesisComponent(paranthesis))
+        if self.isFunction:
+            if paranthesis == ')': 
+                self.display[-1].close()
+                self.isFunction = False
+        else:
+            if paranthesis == ComponentParanthesis._start and len(self.display) ==0: 
+                self.open_paranthesis += 1
+                self.display.append(self.compController.createParanthesisComponent(paranthesis))
+            elif paranthesis == ComponentParanthesis._start and len(self.display)>0 and isinstance(self.display[-1],ComponentOperator):
+                self.open_paranthesis += 1
+                self.display.append(self.compController.createParanthesisComponent(paranthesis))
+            elif paranthesis == ComponentParanthesis._end and len(self.display)>0 and self.open_paranthesis>0 and not isinstance(self.display[-1],ComponentOperator):
+                self.open_paranthesis -= 1
+                self.display.append(self.compController.createParanthesisComponent(paranthesis))
 
 
     def getDisplayValue(self):
@@ -143,13 +177,44 @@ class InputController:
         for i in self.display: display_val+= str(i)
         return display_val
 
-    def delete(self):
+    def typeBackspace(self):
         """
         If you are deleting a number wwith backspace
         321 -> it doesnt matter 32->3 -- you can delete like this
         but if you are deleting a function, that means you have to delete all
         """
-        pass
+        if self.isFunction:
+            if len(self.display[-1].expression)>0 and isinstance(self.display[-1].expression[-1],ComponentValue):
+                if len(str(self.display[-1].expression[-1]))>1:
+                    val = str(self.display[-1].expression[-1])
+                    val = val[:len(val)-1]
+                    self.display[-1].expression[-1].update(val)
+                else:
+                    self.display[-1].expression.pop()
+            elif len(self.display[-1].expression) == 0:
+                self.display.pop()
+                self.isFunction = False
+            else:
+                self.display[-1].expression.pop()
+
+        elif len(self.display) >0 and not self.isFunction:
+            if isinstance(self.display[-1],ComponentValue):
+                if len(str(self.display[-1]))>1:
+                    val = str(self.display[-1])
+                    val = val[:len(val)-1]
+                    self.display[-1].update(val)
+                else:
+                    self.display.pop()
+
+            elif isinstance(self.display[-1],ComponentParanthesis):
+                val = self.display.pop()
+                if str(val) == ComponentParanthesis._start:
+                    self.open_paranthesis -= 1
+                else:
+                    self.open_paranthesis += 1
+
+            else:
+                self.display.pop()
 
     def cls(self):
         self.display.clear()

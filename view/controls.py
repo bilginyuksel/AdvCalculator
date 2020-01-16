@@ -10,6 +10,7 @@ class CalculatorController:
 
         # print("Created controller for ",self._view.tab_result,"..")
         # print("Input controller type ",self._model.ttype)
+        
 
     def _link_buttons(self):
         # @@Numbers
@@ -24,6 +25,7 @@ class CalculatorController:
         self._view.body.operators['+/-'].clicked.connect(self._op_neg)
         self._view.body.operators['('].clicked.connect(partial(self._op_paranthesis,'('))
         self._view.body.operators[')'].clicked.connect(partial(self._op_paranthesis,')'))
+        self._view.body.operators['<-'].clicked.connect(self._op_backspace)
         self._view.body.operators['='].clicked.connect(self._op_equ)
 
 
@@ -46,6 +48,9 @@ class CalculatorController:
         self._model.typeParanthesis(paranthesis)
         self._view.updateExpression(self._model.getDisplayValue())
 
+    def _op_backspace(self):
+        self._model.typeBackspace()
+        self._view.updateExpression(self._model.getDisplayValue())
 
     def _op_neg(self):
         # make minus we need to integrate this some other way
@@ -54,11 +59,10 @@ class CalculatorController:
         self._view.updateResult(val)
 
     def _func_basic(self,func):
-        expr = []
         # fill expression 
-        self._model.typeFunction(func,expr)
+        self._model.typeFunction(func,None)
         self._view.updateExpression(self._model.getDisplayValue())
-        self._view.updateResult(expr)
+        
 
     def _op_equ(self):
         # Solve the equation with the help of tokenizer
