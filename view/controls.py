@@ -23,7 +23,7 @@ class CalculatorController:
         self._view.body.operators['+'].clicked.connect(partial(self._op_base,'+'))
         self._view.body.operators['-'].clicked.connect(partial(self._op_base,'-'))
         self._view.body.operators['/'].clicked.connect(partial(self._op_base,'/'))
-        self._view.body.operators['x'].clicked.connect(partial(self._op_base,'x'))
+        self._view.body.operators['x'].clicked.connect(partial(self._op_base,'*'))
         self._view.body.operators['+/-'].clicked.connect(self._op_neg)
         self._view.body.operators['('].clicked.connect(partial(self._op_paranthesis,'('))
         self._view.body.operators[')'].clicked.connect(partial(self._op_paranthesis,')'))

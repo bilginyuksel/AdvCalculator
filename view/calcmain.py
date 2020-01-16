@@ -48,10 +48,10 @@ def real(content):
             rf = RealFunctions(item.func,funcVal)
             valStack.append(rf.solve)
         elif(isinstance(item,ComponentParanthesis)):
-            if(item.paranthesis== '('):
+            if(item.paranthesis== ComponentParanthesis._start):
                 opStack.append(item.paranthesis)
             else:
-                while opStack[-1]!='(':
+                while opStack[-1]!=ComponentParanthesis._start:
                     op = opStack.pop()
                     rightVal = valStack.pop()
                     leftVal = valStack.pop()
@@ -59,7 +59,7 @@ def real(content):
                     valStack.append(r.solve(leftVal,rightVal))
                 opStack.pop()
         elif(isinstance(item,ComponentOperator)):
-            while len(opStack)>0 and ComponentOperator(opStack[-1]).precedence>=item.precedence:
+            while len(opStack)>0 and ComponentOperator(opStack[-1]).precedence()>=item.precedence():
                 op = opStack.pop()
                 rightVal = valStack.pop()
                 leftVal = valStack.pop()
