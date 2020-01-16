@@ -27,6 +27,8 @@ class CalculatorController:
         self._view.body.operators[')'].clicked.connect(partial(self._op_paranthesis,')'))
         self._view.body.operators['<-'].clicked.connect(self._op_backspace)
         self._view.body.operators['='].clicked.connect(self._op_equ)
+        self._view.body.operators['.'].clicked.connect(self._op_dot)
+        self._view.body.operators['CE'].clicked.connect(self._op_clear)
 
 
         # @@Basic Functions
@@ -43,9 +45,17 @@ class CalculatorController:
     def _op_base(self,op):
         self._model.typeOperator(op)
         self._view.updateExpression(self._model.getDisplayValue())
+    def _op_clear(self):
+        self._model.cls()
+        self._view.updateExpression("0")
+        self._view.updateResult("0")
 
     def _op_paranthesis(self,paranthesis):
         self._model.typeParanthesis(paranthesis)
+        self._view.updateExpression(self._model.getDisplayValue())
+
+    def _op_dot(self):
+        self._model.typeDot()
         self._view.updateExpression(self._model.getDisplayValue())
 
     def _op_backspace(self):
@@ -66,6 +76,7 @@ class CalculatorController:
 
     def _op_equ(self):
         # Solve the equation with the help of tokenizer
+        data_waiting_for_tokenization = self._model.display
         print(self._model.getDisplayValue())
 
         

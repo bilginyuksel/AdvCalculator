@@ -61,6 +61,11 @@ class ComponentOperator:
     def __str__(self):
         return self.op
 
+def conversion(val):
+    if str(val).find(".")==-1:
+        return int(val)
+    return float(val)
+
 class ComponentValue:
 
     _pi = (22/7)
@@ -71,7 +76,7 @@ class ComponentValue:
         # Get value as integer or float.
         # You have to declare it here.
 
-        self.val = val
+        self.val = conversion(val)
         self.special_val = [ComponentValue._pi,ComponentValue._e]
 
         self.type = "basic"
@@ -79,6 +84,7 @@ class ComponentValue:
 
     def update(self,val):
         self.val = val
+
 
     def __len__(self):
         return len(str(self.val))
@@ -118,7 +124,7 @@ class InputController:
         self.isFunction = False
 
     def typeFunction(self,func, expression):
-        if len(self.display)>0 and (isinstance(self.display[-1],ComponentOperator) or self.display[-1] == '(') : 
+        if len(self.display)>0 and (isinstance(self.display[-1],ComponentOperator) or str(self.display[-1]) == ComponentParanthesis._start) : 
             self.display.append(self.compController.createFunctionComponent(func, expression))
             self.isFunction = True
         elif len(self.display)==0:
@@ -126,7 +132,7 @@ class InputController:
             self.isFunction = True
     def negatiate(self):
         if len(self.display)>0 and isinstance(self.display[-1],ComponentValue):
-            return self.display[-1].update(int(str(self.display[-1]))*-1)
+            return self.display[-1].update(conversion(str(self.display[-1]))*-1)
 
     def typeValue(self,val):
         """
@@ -137,16 +143,29 @@ class InputController:
         if self.isFunction:
             if len(self.display[-1].expression)>0 and isinstance(self.display[-1].expression[-1],ComponentValue):            
                 curr_value = self.display[-1].expression[-1] # Takes object reference
-                curr_value.update(int(str(curr_value)+val))
+                curr_value.update(conversion(str(curr_value)+val))
                 # self.display[-1].update(int(str(self.display[-1])+val))
             else: self.display[-1].expression.append(self.compController.createValueComponent(val))
         else:
             if len(self.display)>0 and isinstance(self.display[-1],ComponentValue):            
                 curr_value = self.display[-1] # Takes object reference
-                curr_value.update(int(str(curr_value)+val))
+                curr_value.update(conversion(str(curr_value)+val))
                 # self.display[-1].update(int(str(self.display[-1])+val))
             else: self.display.append(self.compController.createValueComponent(val))
         
+    def typeDot(self):
+        if self.isFunction:
+            if len(self.display[-1].expression)>0 and isinstance(self.display[-1].expression[-1],ComponentValue):
+                checkval = self.display[-1].expression[-1]
+                if isinstance(conversion(checkval),int):
+                    val = str(self.display[-1].expression[-1]+".")
+                    self.display[-1].expression[-1].update(val)
+
+        else:
+            if len(self.display)>0 and isinstance(self.display[-1],ComponentValue):
+                checkval = str(self.display[-1])
+                if isinstance(conversion(checkval),int):
+                    self.display[-1].update(str(self.display[-1])+".")
 
     def typeOperator(self,op):
         if self.isFunction:
