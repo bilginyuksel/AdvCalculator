@@ -1,4 +1,6 @@
-from utils.component import ComponentFunction,ComponentOperator,ComponentParanthesis,ComponentValue
+import sys
+sys.path.append("..")
+from component import ComponentFunction,ComponentOperator,ComponentParanthesis,ComponentValue
 from calculator.functions.realfunctions import RealFunctions
 from calculator.real import Real
 def vector1d(content):
@@ -15,8 +17,8 @@ def real(content):
             rf = RealFunctions(item.func,funcVal)
             valStack.append(rf.solve)
         elif(isinstance(item,ComponentParanthesis)):
-            if(item.__str__ == '('):
-                opStack.append(item.__str__)
+            if(item.paranthesis== '('):
+                opStack.append(item.paranthesis)
             else:
                 while opStack[-1]!='(':
                     op = opStack.pop()
@@ -32,7 +34,8 @@ def real(content):
                 leftVal = valStack.pop()
                 r = Real(op)
                 valStack.append(r.solve(leftVal,rightVal))
-            opStack.append(item.__str__)
+            opStack.append(item.op)
+        
     while len(opStack)>0:
         op = opStack.pop()
         rightVal = valStack.pop()
@@ -57,8 +60,7 @@ class Tokenizer:
         return self.tokenizers[self.tokenizer_type](content)
 
 
-vectorTokenizer = Tokenizer("vector1d")
-result = vectorTokenizer.tokenize("[1,2] + [3,4]/2")
 
-complexTokenizer = Tokenizer("real")
-result = complexTokenizer.tokenize("sin(100)/2 + (5*cos(180))")
+realTokenizer = Tokenizer("real")
+result = realTokenizer.tokenize([ComponentValue(123),ComponentOperator('+'),ComponentValue(41)])
+print(result)
