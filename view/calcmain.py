@@ -33,7 +33,63 @@ VectorCalculatorBody,
 Vector2DCalculatorBody,
 ComplexCalculatorBody)
 from controls import CalculatorController
-from utils.component import InputController
+from utils.component import *
+
+from calculator.functions.realfunctions import RealFunctions
+from calculator.real import Real
+def real(content):
+    valStack = []
+    opStack = []
+    for item in content:
+        if(isinstance(item,ComponentValue)):
+            valStack.append(item.val)
+        elif(isinstance(item,ComponentFunction)):
+            funcVal = real(item.expression)
+            rf = RealFunctions(item.func,funcVal)
+            valStack.append(rf.solve)
+        elif(isinstance(item,ComponentParanthesis)):
+            if(item.paranthesis== '('):
+                opStack.append(item.paranthesis)
+            else:
+                while opStack[-1]!='(':
+                    op = opStack.pop()
+                    rightVal = valStack.pop()
+                    leftVal = valStack.pop()
+                    r = Real(op)
+                    valStack.append(r.solve(leftVal,rightVal))
+                opStack.pop()
+        elif(isinstance(item,ComponentOperator)):
+            while len(opStack)>0 and ComponentOperator(opStack[-1]).precedence>=item.precedence:
+                op = opStack.pop()
+                rightVal = valStack.pop()
+                leftVal = valStack.pop()
+                r = Real(op)
+                valStack.append(r.solve(leftVal,rightVal))
+            opStack.append(item.op)
+        
+    while len(opStack)>0:
+        op = opStack.pop()
+        rightVal = valStack.pop()
+        leftVal = valStack.pop()
+        r = Real(op)
+        valStack.append(r.solve(leftVal,rightVal))
+    return valStack.pop()
+
+class Tokenizer:
+    
+    def __init__(self,tType):
+
+        self.tokenizer_type = tType
+
+        self.tokenizers = {
+            "real":real
+        }
+
+    def tokenize(self,content):
+        # Maybe do some controls here.
+        return self.tokenizers[self.tokenizer_type](content)
+
+
 
 
 class CalculatorView(QWidget):
@@ -128,7 +184,7 @@ class GeneralCalcView(QTabWidget):
         vec1 = CalculatorView(ctype=GeneralCalcView._vector1d)
         vec2 = CalculatorView(ctype=GeneralCalcView._vector2d)
 
-        sci_controller  = CalculatorController(sci, InputController(GeneralCalcView._scientific))
+        sci_controller  = CalculatorController(sci, InputController(GeneralCalcView._scientific),Tokenizer("real"))
         comp_controller = CalculatorController(comp, InputController(GeneralCalcView._complex))
         vec1_controller = CalculatorController(vec1, InputController(GeneralCalcView._vector1d))
         vec2_controller = CalculatorController(vec2, InputController(GeneralCalcView._vector2d))

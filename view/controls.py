@@ -1,11 +1,13 @@
 from functools import partial
 
 
+
 class CalculatorController:
     
-    def __init__(self, view, model):
+    def __init__(self, view, model,tokenizer=None):
         self._view = view
         self._model = model
+        self.tokenizer = tokenizer
         self._link_buttons()
 
         # print("Created controller for ",self._view.tab_result,"..")
@@ -77,6 +79,8 @@ class CalculatorController:
     def _op_equ(self):
         # Solve the equation with the help of tokenizer
         data_waiting_for_tokenization = self._model.display
+        res = self.tokenizer.tokenize(data_waiting_for_tokenization)
+        print("Result : ",res)
         print(self._model.getDisplayValue())
 
         
