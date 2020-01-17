@@ -40,7 +40,7 @@ from utils.component import *
 Tokenizer part
 """
 from calculator.functions.realfunctions import RealFunctions
-from calculator.real import Real
+from calculator.real import RealOperator
 def real(content):
     valStack = []
     opStack = []
@@ -59,7 +59,7 @@ def real(content):
                     op = opStack.pop()
                     rightVal = valStack.pop()
                     leftVal = valStack.pop()
-                    r = Real(op)
+                    r = RealOperator(op)
                     valStack.append(r.solve(leftVal,rightVal))
                 opStack.pop()
         elif(isinstance(item,ComponentOperator)):
@@ -67,7 +67,7 @@ def real(content):
                 op = opStack.pop()
                 rightVal = valStack.pop()
                 leftVal = valStack.pop()
-                r = Real(op)
+                r = RealOperator(op)
                 valStack.append(r.solve(leftVal,rightVal))
             opStack.append(item.op)
         
@@ -75,7 +75,7 @@ def real(content):
         op = opStack.pop()
         rightVal = valStack.pop()
         leftVal = valStack.pop()
-        r = Real(op)
+        r = RealOperator(op)
         valStack.append(r.solve(leftVal,rightVal))
     return valStack.pop()
 

@@ -67,7 +67,7 @@ class BaseOperator:
 
     def __init__(self):
         # configure operators
-        self.name = "Base"
+        self.name = "Operator"
 
 
     def add(self,*args):
@@ -82,31 +82,7 @@ class BaseOperator:
     def divide(self,*args):
         raise NotImplementedError
 
-class RealOperator(BaseOperator):
 
-    def add(self, *args):
-        return super().add(*args)
-
-    def substract(self, *args):
-        return super().substract(*args)(self):
-
-    def multiply(self, *args):
-        return super().multiply(*args)
-
-    def divide(self, *args):
-        return super().divide(*args)
-
-
-
-
-realManager = OperatorManager(RealOperator())
-realManager.solve(2,3,'+')
-# vectorManager = OperatorManager(VectorOperator())
-
-# o_manager = BaseOperatorManager()
-# result = o_manager.solve(value_list.pop(),value_list.pop(),op_list.pop())
-# f_manager= BaseFunctionManager()
-# f_manager.solve(100,'sin')
 
 
 class Formula:

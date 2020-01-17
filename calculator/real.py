@@ -1,5 +1,8 @@
-class Real:
+from .base import BaseOperator
+
+class RealOperator(BaseOperator):
     def __init__(self,op):
+        super().__init__()
         self.op = op
         self.operations = {
             '+':self.add,
@@ -18,3 +21,4 @@ class Real:
     def solve(self,val1,val2):
         return self.operations[self.op](val1,val2)
     
+
