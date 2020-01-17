@@ -41,6 +41,7 @@ Tokenizer part
 """
 from calculator.functions.realfunctions import RealFunctions
 from calculator.real import RealOperator
+
 def real(content):
     valStack = []
     opStack = []

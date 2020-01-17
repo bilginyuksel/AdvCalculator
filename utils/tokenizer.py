@@ -1,6 +1,9 @@
 try:  
-    from .utils.component import *
-
+    from component import *
+    import sys
+    sys.path.append("..")
+    from calculator.real import RealOperator
+    from calculator.functions.realfunctions import RealFunctions
 except ImportError as e:
     print(e)
 
