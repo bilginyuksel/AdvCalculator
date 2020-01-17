@@ -16,7 +16,7 @@ def real(content):
             valStack.append(item.val)
         elif(isinstance(item,ComponentFunction)):
             funcVal = real(item.expression)
-            rf = RealFunctions(item.func,funcVal)
+            rf = RealFunctions(item.fun,funcVal)
             valStack.append(rf.solve)
         elif(isinstance(item,ComponentParanthesis)):
             if(item.paranthesis== '('):

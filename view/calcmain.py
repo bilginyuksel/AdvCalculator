@@ -35,6 +35,10 @@ ComplexCalculatorBody)
 from controls import CalculatorController
 from utils.component import *
 
+"""
+-----------------------------
+Tokenizer part
+"""
 from calculator.functions.realfunctions import RealFunctions
 from calculator.real import Real
 def real(content):
@@ -45,8 +49,8 @@ def real(content):
             valStack.append(item.val)
         elif(isinstance(item,ComponentFunction)):
             funcVal = real(item.expression)
-            rf = RealFunctions(item.func,funcVal)
-            valStack.append(rf.solve)
+            rf = RealFunctions(item.fun,funcVal)
+            valStack.append(rf.solve())
         elif(isinstance(item,ComponentParanthesis)):
             if(item.paranthesis== ComponentParanthesis._start):
                 opStack.append(item.paranthesis)
@@ -90,7 +94,10 @@ class Tokenizer:
         return self.tokenizers[self.tokenizer_type](content)
 
 
-
+"""
+-----------------------------
+Tokenizer part
+"""
 
 class CalculatorView(QWidget):
     

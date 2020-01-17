@@ -45,7 +45,7 @@ class ComponentParanthesis:
 class ComponentOperator:
 
     _add = '+'
-    _mul = 'x'
+    _mul = '*'
     _sub = '-'
     _div = '/'
     
@@ -53,7 +53,11 @@ class ComponentOperator:
         self.op = op
     
     def precedence(self):
-        return (2 if (self.op == ComponentOperator._mul) or (self.op == ComponentOperator._div) else 1)
+        if self.op == ComponentOperator._add or self.op == ComponentOperator._sub:
+            return 1
+        elif self.op == ComponentOperator._mul or self.op == ComponentOperator._div:
+            return 2
+        return 0
 
     def __len__(self):
         return 1
