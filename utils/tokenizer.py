@@ -1,5 +1,5 @@
 try:  
-    from component import *
+    from .component import *
     import sys
     sys.path.append("..")
     from calculator.real import RealOperator
