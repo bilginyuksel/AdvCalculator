@@ -1,13 +1,9 @@
-try:
-    import sys
-    sys.path.append("..")
-    
-    from utils.component import *
+try:  
+    from .utils.component import *
+
 except ImportError as e:
     print(e)
 
-from calculator.functions.realfunctions import RealFunctions
-from calculator.real import Real
 def real(content):
     valStack = []
     opStack = []
@@ -17,24 +13,24 @@ def real(content):
         elif(isinstance(item,ComponentFunction)):
             funcVal = real(item.expression)
             rf = RealFunctions(item.fun,funcVal)
-            valStack.append(rf.solve)
+            valStack.append(rf.solve())
         elif(isinstance(item,ComponentParanthesis)):
-            if(item.paranthesis== '('):
+            if(item.paranthesis== ComponentParanthesis._start):
                 opStack.append(item.paranthesis)
             else:
-                while opStack[-1]!='(':
+                while opStack[-1]!=ComponentParanthesis._start:
                     op = opStack.pop()
                     rightVal = valStack.pop()
                     leftVal = valStack.pop()
-                    r = Real(op)
+                    r = RealOperator(op)
                     valStack.append(r.solve(leftVal,rightVal))
                 opStack.pop()
         elif(isinstance(item,ComponentOperator)):
-            while len(opStack)>0 and ComponentOperator(opStack[-1]).precedence>=item.precedence:
+            while len(opStack)>0 and ComponentOperator(opStack[-1]).precedence()>=item.precedence():
                 op = opStack.pop()
                 rightVal = valStack.pop()
                 leftVal = valStack.pop()
-                r = Real(op)
+                r = RealOperator(op)
                 valStack.append(r.solve(leftVal,rightVal))
             opStack.append(item.op)
         
@@ -42,7 +38,7 @@ def real(content):
         op = opStack.pop()
         rightVal = valStack.pop()
         leftVal = valStack.pop()
-        r = Real(op)
+        r = RealOperator(op)
         valStack.append(r.solve(leftVal,rightVal))
     return valStack.pop()
 
@@ -59,10 +55,3 @@ class Tokenizer:
     def tokenize(self,content):
         # Maybe do some controls here.
         return self.tokenizers[self.tokenizer_type](content)
-
-
-# vectorTokenizer = Tokenizer("vector1d")
-# result = vectorTokenizer.tokenize("[1,2] + [3,4]/2")
-
-# complexTokenizer = Tokenizer("real")
-# result = complexTokenizer.tokenize("sin(100)/2 + (5*cos(180))")
