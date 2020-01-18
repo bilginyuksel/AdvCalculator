@@ -1,11 +1,9 @@
 class FunctionManager:
     
-    def __init__(self,solver,functions):
-
-        self.functions = functions
-
+    def __init__(self,solver):
+        self.solver = solver
     def solve(self, val, func):
-        return self.functions[func](val)
+        return self.solver.functions[func](val)
 
 
 class OperatorManager:
