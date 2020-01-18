@@ -1,10 +1,8 @@
 class FunctionManager:
     
-    def __init__(self,solver,):
+    def __init__(self,solver,functions):
 
-        self.functions = {
-
-        }
+        self.functions = functions
 
     def solve(self, val, func):
         return self.functions[func](val)

@@ -1,7 +1,9 @@
+
 from .component import *
 import sys
 sys.path.append("..")
-from calculator.real import OperatorManager,RealOperator
+from calculator.real import RealOperator
+from calculator.base import OperatorManager
 from calculator.functions.realfunctions import RealFunctions
 
 
@@ -56,5 +58,5 @@ class Tokenizer:
     def tokenize(self,content):
         # Maybe do some controls here.
         solver = self.solvers[self.tokenizer_type]
-        func = self.tokenizers[self.tokenizer_type]
+        func = real
         return func(content,solver)

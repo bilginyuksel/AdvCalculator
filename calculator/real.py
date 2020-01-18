@@ -1,4 +1,4 @@
-from .base import BaseOperator, OperatorManager
+from .base import BaseOperator
 
 class RealOperator(BaseOperator):
     def __init__(self):
