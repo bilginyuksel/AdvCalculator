@@ -49,10 +49,14 @@ class Tokenizer:
         self.tokenizer_type = tType
 
         self.solvers = {
-            "real":RealOperator()
+            "real":RealOperator(),
+            "vec1":None,
+            "vec2":None
         }
         self.fun_solvers = {
-            "real":RealFunctions()
+            "real":RealFunctions(),
+            "vec1":None,
+            "vec2":None
         }
 
     def tokenize(self,content):

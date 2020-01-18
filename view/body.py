@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout,QLineEdit, QDialog
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 import sys
 from functools import partial
 
@@ -88,20 +89,128 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         super().__init__()
         
         self._create_buttons()
+
+        self.basic_functions = {
+            'sum':self.sum,
+            'median':self.median,
+            'mod':self.mod,
+            'max':self.max,
+            'min':self.min,
+            'CE':self.clear,
+            '<-':self.backspace,
+
+        }
+
         self._set_layout()
 
 
     def _create_buttons(self):
         self.create_vector = QPushButton("Create Vector")
         self.create_vector.clicked.connect(self._open_dialog)
+
+
+        self.sum = QPushButton("sum")
+        self.median = QPushButton("median")
+        self.mod = QPushButton("mod")
+        self.max = QPushButton('max')
+        self.min = QPushButton('min')
+        self.clear = QPushButton('CE')
+        self.backspace = QPushButton('<-')
         
+        return super()._create_buttons()
+
+    def _set_layout(self):
+
+        first_two_buttons = QHBoxLayout()
+        first_two_buttons.addWidget(self.basic_functions['CE'])
+        first_two_buttons.addWidget(self.basic_functions['<-'])
+
+        second_four_buttons = QHBoxLayout()
+        second_four_buttons.addWidget(self.basic_functions['median'])
+        second_four_buttons.addWidget(self.basic_functions['mod'])
+        second_four_buttons.addWidget(self.basic_functions['max'])
+        second_four_buttons.addWidget(self.basic_functions['min'])
+
+        third_four_buttons = QHBoxLayout()
+        third_four_buttons.addWidget(self.operators['('])
+        third_four_buttons.addWidget(self.operators[')'])
+        third_four_buttons.addWidget(self.basic_functions['sum'])
+        third_four_buttons.addWidget(self.operators['/'])
+
+        fourth_four_buttons = QHBoxLayout()
+        fourth_four_buttons.addWidget(self.numbers['7'])
+        fourth_four_buttons.addWidget(self.numbers['8'])
+        fourth_four_buttons.addWidget(self.numbers['9'])
+        fourth_four_buttons.addWidget(self.operators['x'])
+
+        fifth_four_buttons = QHBoxLayout()
+        fifth_four_buttons.addWidget(self.numbers['4'])
+        fifth_four_buttons.addWidget(self.numbers['5'])
+        fifth_four_buttons.addWidget(self.numbers['6'])
+        fifth_four_buttons.addWidget(self.operators['-'])
+
+        sixth_four_buttons = QHBoxLayout()
+        sixth_four_buttons.addWidget(self.numbers['1'])
+        sixth_four_buttons.addWidget(self.numbers['2'])
+        sixth_four_buttons.addWidget(self.numbers['3'])
+        sixth_four_buttons.addWidget(self.operators['+'])
+
+        seventh_four_buttons = QHBoxLayout()
+        seventh_four_buttons.addWidget(self.operators['+/-'])
+        seventh_four_buttons.addWidget(self.numbers['0'])
+        seventh_four_buttons.addWidget(self.operators['.'])
+        seventh_four_buttons.addWidget(self.operators['='])
+
+        self.addWidget(self.create_vector)
+        self.addLayout(first_two_buttons)
+        self.addLayout(second_four_buttons)
+        self.addLayout(third_four_buttons)
+        self.addLayout(fourth_four_buttons)
+        self.addLayout(fifth_four_buttons)
+        self.addLayout(sixth_four_buttons)
+        self.addLayout(seventh_four_buttons)
+
+
+    def _open_dialog(self):
+        self.dialog = Dialog(isVector1d=True)
+        self.dialog.show()
+        self.dialog.closeEvent = self.dialog_return
+
+    def setto(self,func):
+        self.func = func
+
+    def dialog_return(self,event):
+        try:
+            self.func(self.dialog.vec)
+        except:
+            # Just close
+            pass
+    
+
+class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
+    def __init__(self):
+        super().__init__()
+        self._create_buttons()
+
+        self.basic_functions = {
+
+        }
+
+        self._set_layout()
+
+
+    def _create_buttons(self):
+        self.create_vector = QPushButton("Create Vector")
+        self.create_vector.clicked.connect(self._open_dialog)
+
         return super()._create_buttons()
 
     def _set_layout(self):
         self.addWidget(self.create_vector)
         return super()._set_layout()
 
-    def _open_dialog(self,signal):
+
+    def _open_dialog(self):
         self.dialog = Dialog()
         self.dialog.show()
         self.dialog.closeEvent = self.dialog_return
@@ -110,35 +219,13 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         self.func = func
 
     def dialog_return(self,event):
-        print("Returned")
-        self.func(self.dialog.vec)
-
-    
-
-class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
-    def __init__(self):
-        super().__init__()
-        self._create_buttons()
+        try:
+            self.func(self.dialog.vec)
+        except:
+            # just close
+            pass
 
 
-    def _create_buttons(self):
-        return super()._create_buttons()
-
-    def _set_layout(self):
-        return super()._set_layout()
-
-class ComplexCalculatorBody(QVBoxLayout, BodyLayout):
-    
-    def __init__(self):
-        super().__init__()
-        self._create_buttons()
-
-
-    def _create_buttons(self):
-        return super()._create_buttons()
-
-    def _set_layout(self):
-        return super()._set_layout()
     
 
 class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
@@ -266,14 +353,15 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
         self.addLayout(seventh_five_buttons)
         self.addLayout(eighth_five_buttons)
 
-
-
 class Dialog(QWidget):
     
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, isVector1d = False):
         super().__init__(parent=parent)
- 
+        self.isVector1d = isVector1d
         self.main = QVBoxLayout()
+        self.setWindowIcon(QIcon("assets/vector1d.png"))
+        self.setWindowTitle("Vector")
+        self.setMinimumWidth(300)
         self._configuration()
 
         self.setLayout(self.main)
@@ -281,7 +369,12 @@ class Dialog(QWidget):
     def _configuration(self):
         labelrow = QLabel("Row : ")
         labelcol = QLabel("Col : ")
+    
         self.row = QLineEdit()
+        if self.isVector1d:
+            self.row.setText("1")
+            self.row.setDisabled(True)
+        
         self.column = QLineEdit()
         self.create_elements = QPushButton("Create Elements")
         self.create_elements.clicked.connect(self._create_elements_layout)
