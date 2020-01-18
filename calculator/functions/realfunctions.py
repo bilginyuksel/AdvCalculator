@@ -10,3 +10,4 @@ class RealFunctions:
     def solve(self):
         data = self.funcs[self.func](self.val)
         return data
+

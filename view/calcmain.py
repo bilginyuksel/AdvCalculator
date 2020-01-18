@@ -57,7 +57,9 @@ class CalculatorView(QWidget):
         self.expression.setText(expression)
     def updateResult(self,result):
         self.result.setText(result)
-    
+    def updateHistory(self,expression):
+        self.history.addItem(expression)
+
     def __configuration(self):
         self.main = QHBoxLayout()
         self.left = QVBoxLayout()
@@ -94,9 +96,6 @@ class CalculatorView(QWidget):
 
         self.history = QListWidget()
         self.formula = QListWidget()
-
-        self.history.addItem("No element on history.")
-        self.formula.addItem("No element on formulas.")
 
         rtab.addTab(self.history,"History")
         rtab.addTab(self.formula,"Formulas")

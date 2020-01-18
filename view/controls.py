@@ -38,6 +38,8 @@ class CalculatorController:
         if self._model.ttype == "Scientific":
             for i in self._view.body.basic_functions.keys():
                 self._view.body.basic_functions[i].clicked.connect(partial(self._func_basic,i))
+        elif self._model.ttype == "Vector1d":
+            pass
 
     def _num_any(self,obj_name):
         self._model.typeValue(obj_name)
@@ -80,8 +82,10 @@ class CalculatorController:
         # Solve the equation with the help of tokenizer
         data_waiting_for_tokenization = self._model.display
         res = self.tokenizer.tokenize(data_waiting_for_tokenization)
-        print("Result : ",res)
-        print(self._model.getDisplayValue())
+        history_element = self._model.getDisplayValue() + "=" + str(res)
+        self._view.updateHistory(history_element)
+        # print("Result : ",res)
+        
 
         
  

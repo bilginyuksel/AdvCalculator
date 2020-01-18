@@ -46,7 +46,6 @@ class BaseOperator:
 
 
 
-
 class Formula:
     def __init__(self,*args):
         super().__init__()

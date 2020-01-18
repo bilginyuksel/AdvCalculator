@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout
+from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout,QLineEdit
 from PyQt5.QtCore import Qt
 import sys
 
@@ -79,6 +79,8 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
 
 
     def _create_buttons(self):
+        self.open_dialog = QPushButton(self,"Create Vector")
+        self.addWidget()
         return super()._create_buttons()
 
     def _set_layout(self):
@@ -245,3 +247,30 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
 
 
 
+class Dialog(QWidget):
+    
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+
+
+        self.main = QVBoxLayout()
+        self.setLayout(self.main)
+
+
+
+    def _configuration(self):
+        labelrow = QLabel("Row : ")
+        labelcol = QLabel("Col : ")
+        self.row = QLineEdit()
+        self.column = QLineEdit()
+
+        hbox1 = QHBoxLayout()
+        hbox.addWidget(labelrow)
+        hbox.addWidget(self.row)
+
+        hbox2 = QHBoxLayout()
+        hbox.addWidget(labelcol)
+        hbox.addWidget(self.column)
+
+        self.main.addLayout(hbox1)
+        self.main.addLayout(hbox2)

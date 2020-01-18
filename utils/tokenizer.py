@@ -1,17 +1,17 @@
-
 from .component import *
 import sys
 sys.path.append("..")
 from calculator.real import RealOperator
-from calculator.base import OperatorManager
+from calculator.base import OperatorManager,FunctionManager
 from calculator.functions.realfunctions import RealFunctions
 
 
-def real(content,solver = RealOperator()):
+def real(content,op_solver = RealOperator(),fun_solver = None):
     valStack = []
     opStack = []
 
-    op_manager = OperatorManager(solver)
+    op_manager = OperatorManager(op_solver)
+    fun_manager = FunctionManager(fun_solver,{'t':None})
     
     for item in content:
         if(isinstance(item,ComponentValue)):
