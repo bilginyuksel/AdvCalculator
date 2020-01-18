@@ -125,9 +125,9 @@ class GeneralCalcView(QTabWidget):
         vec1 = CalculatorView(ctype=GeneralCalcView._vector1d)
         vec2 = CalculatorView(ctype=GeneralCalcView._vector2d)
 
-        sci_controller  = CalculatorController(sci, InputController(GeneralCalcView._scientific),Tokenizer("real"))
-        vec1_controller = CalculatorController(vec1, InputController(GeneralCalcView._vector1d))
-        vec2_controller = CalculatorController(vec2, InputController(GeneralCalcView._vector2d))
+        sci_controller  = CalculatorController(sci, InputController(GeneralCalcView._scientific), Tokenizer("real"))
+        vec1_controller = CalculatorController(vec1, InputController(GeneralCalcView._vector1d), Tokenizer("vec1"))
+        vec2_controller = CalculatorController(vec2, InputController(GeneralCalcView._vector2d), Tokenizer("vec2"))
 
 
         self.addTab(sci, QIcon("assets/calculator.png"), GeneralCalcView._scientific)

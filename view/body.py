@@ -199,6 +199,17 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         self._set_layout()
 
 
+    def _create_buttons(self):
+        self.create_vector = QPushButton("Create Vector")
+        self.create_vector.clicked.connect(self._open_dialog)
+
+        return super()._create_buttons()
+
+    def _set_layout(self):
+        self.addWidget(self.create_vector)
+        return super()._set_layout()
+
+
     def _open_dialog(self):
         self.dialog = Dialog()
         self.dialog.show()
@@ -213,16 +224,6 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         except:
             # just close
             pass
-
-    def _create_buttons(self):
-        self.create_vector = QPushButton("Create Vector")
-        self.create_vector.clicked.connect(self._open_dialog)
-
-        return super()._create_buttons()
-
-    def _set_layout(self):
-        self.addWidget(self.create_vector)
-        return super()._set_layout()
 
 
     
@@ -351,8 +352,6 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
         self.addLayout(sixth_five_buttons)
         self.addLayout(seventh_five_buttons)
         self.addLayout(eighth_five_buttons)
-
-
 
 class Dialog(QWidget):
     
