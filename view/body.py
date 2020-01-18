@@ -83,7 +83,6 @@ class BodyLayout:
     def _set_layout(self):
         pass
 
-
 class VectorCalculatorBody(QVBoxLayout, BodyLayout):
     def __init__(self):
         super().__init__()
@@ -182,7 +181,6 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
             # Just close
             pass
     
-
 class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
     def __init__(self):
         super().__init__()
@@ -300,9 +298,6 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         except:
             # just close
             pass
-
-
-    
 
 class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
     
