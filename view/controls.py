@@ -33,6 +33,10 @@ class CalculatorController:
         self._view.body.operators['CE'].clicked.connect(self._op_clear)
 
 
+        if self._model.ttype == "Vector 1d":
+            self._view.body.setto(self._num_any)
+
+
         self._view.body.special_numbers['pi'].clicked.connect(partial(self._num_any,str(22/7)))
         # self._view.body.special_numbers['e'].clicked.connect(partial(self._num_any,str(10/10/10)))
         # @@Basic Functions
@@ -42,6 +46,9 @@ class CalculatorController:
                 self._view.body.basic_functions[i].clicked.connect(partial(self._func_basic,i))
         elif self._model.ttype == "Vector1d":
             pass
+
+    
+   
 
     def _num_any(self,obj_name):
         self._model.typeValue(obj_name)
