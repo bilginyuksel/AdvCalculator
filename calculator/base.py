@@ -1,42 +1,6 @@
-# InputType or another things
-# This class is abstract class for all Inputs
-# I mean vector, 2DVector, Complexnumber, Number
-class InputType:
-    
-    def __init__(self,type):
-        self.type = type
-
-    def __isVector(self):
-        return False
-
-    def __is2dVector(self):
-        return False
-
-    def __isComplex(self):
-        return False
-
-    def __isReal(self):
-        return False
-
-    def inputType(self):
-        if self.__isVector():
-            return "vector"
-        elif self.__is2dVector():
-            return "2dVector"
-        elif self.__isComplex():
-            return "complex"
-        else: return "real"
-
-"""
-According to that input type
-run the tokenizer which can tokenize this input type
-"""
-
-
-
 class FunctionManager:
     
-    def __init__(self):
+    def __init__(self,solver,):
 
         self.functions = {
 
@@ -48,18 +12,18 @@ class FunctionManager:
 
 class OperatorManager:
     
-    def __init__(self,opSolver):
+    def __init__(self,solver):
 
         self.operators = {
             # how to fill those operators
-            '+':opSolver.add,
-            '-':opSolver.substract,
-            '*':opSolver.multiply,
-            '/':opSolver.divide
+            '+':solver.add,
+            '-':solver.substract,
+            '*':solver.multiply,
+            '/':solver.divide
         }
 
     def solve(self, val1, val2, op):
-        assert (not op in self.operators.keys()), "You can't solve anything with paranthesis !"
+        # assert (not op in self.operators.keys()), "You can't solve anything with paranthesis !"
         return self.operators[op](val1,val2)
 
 
