@@ -66,7 +66,9 @@ class ComponentOperator:
         return self.op
 
 def conversion(val):
-    if str(val).find(".")==-1:
+    if str(val).find(",")!=-1:
+        return list(val) 
+    elif str(val).find(".")==-1:
         return int(val)
     return float(val)
 
@@ -147,13 +149,15 @@ class InputController:
         if self.isFunction:
             if len(self.display[-1].expression)>0 and isinstance(self.display[-1].expression[-1],ComponentValue):            
                 curr_value = self.display[-1].expression[-1] # Takes object reference
-                curr_value.update(conversion(str(curr_value)+val))
+                if not isinstance(curr_value.val,list):
+                    curr_value.update(conversion(str(curr_value)+val))
                 # self.display[-1].update(int(str(self.display[-1])+val))
             else: self.display[-1].expression.append(self.compController.createValueComponent(val))
         else:
             if len(self.display)>0 and isinstance(self.display[-1],ComponentValue):            
                 curr_value = self.display[-1] # Takes object reference
-                curr_value.update(conversion(str(curr_value)+val))
+                if not isinstance(curr_value.val,list):
+                    curr_value.update(conversion(str(curr_value)+val))
                 # self.display[-1].update(int(str(self.display[-1])+val))
             elif len(self.display)>0 and str(self.display[-1])==ComponentParanthesis._end: pass
             else: self.display.append(self.compController.createValueComponent(val))

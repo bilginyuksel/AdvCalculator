@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout,QLineEdit, QDialog
 from PyQt5.QtCore import Qt
 import sys
+from functools import partial
 
 class BodyLayout:
 
@@ -89,18 +90,29 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         self._create_buttons()
         self._set_layout()
 
+
     def _create_buttons(self):
         self.create_vector = QPushButton("Create Vector")
         self.create_vector.clicked.connect(self._open_dialog)
+        
         return super()._create_buttons()
 
     def _set_layout(self):
         self.addWidget(self.create_vector)
         return super()._set_layout()
 
-    def _open_dialog(self):
+    def _open_dialog(self,signal):
         self.dialog = Dialog()
         self.dialog.show()
+        self.dialog.closeEvent = self.dialog_return
+
+    def setto(self,func):
+        self.func = func
+
+    def dialog_return(self,event):
+        print("Returned")
+        self.func(self.dialog.vec)
+
     
 
 class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
@@ -261,14 +273,10 @@ class Dialog(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
  
-
         self.main = QVBoxLayout()
         self._configuration()
 
         self.setLayout(self.main)
-
-
-
 
     def _configuration(self):
         labelrow = QLabel("Row : ")
@@ -296,16 +304,20 @@ class Dialog(QWidget):
         row = int(self.row.text())
         col = int(self.column.text())
 
-        vec = []
+        self.vec = []
         for _ in range(row):
             tmp = []
             for _ in range(col):
                 tmp.append(float(self.line_edits[total].text()))
                 total+=1
-            vec.append(tmp)
+                
+            if row == 1: self.vec = tmp
+            else: self.vec.append(tmp)
 
-        print(vec)
+        print(self.vec)
+        
         self.close()
+
 
     
     def _create_elements_layout(self):
@@ -338,3 +350,5 @@ class Dialog(QWidget):
         self.set_elements.clicked.connect(self._set_elements)
 
         self.main.addWidget(self.set_elements)
+
+    
