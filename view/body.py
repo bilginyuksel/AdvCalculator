@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout,QLineEdit, QDialog
 from PyQt5.QtCore import Qt
 import sys
+from functools import partial
 
 class BodyLayout:
 
@@ -87,20 +88,100 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         super().__init__()
         
         self._create_buttons()
+
+        self.basic_functions = {
+            'sum':self.sum,
+            'median':self.median,
+            'mod':self.mod,
+            'max':self.max,
+            'min':self.min,
+            'CE':self.clear,
+            '<-':self.backspace,
+
+        }
+
         self._set_layout()
+
 
     def _create_buttons(self):
         self.create_vector = QPushButton("Create Vector")
         self.create_vector.clicked.connect(self._open_dialog)
+
+
+        self.sum = QPushButton("sum")
+        self.median = QPushButton("median")
+        self.mod = QPushButton("mod")
+        self.max = QPushButton('max')
+        self.min = QPushButton('min')
+        self.clear = QPushButton('CE')
+        self.backspace = QPushButton('<-')
+        
         return super()._create_buttons()
 
     def _set_layout(self):
-        self.addWidget(self.create_vector)
-        return super()._set_layout()
 
-    def _open_dialog(self):
+        first_two_buttons = QHBoxLayout()
+        first_two_buttons.addWidget(self.basic_functions['CE'])
+        first_two_buttons.addWidget(self.basic_functions['<-'])
+
+        second_four_buttons = QHBoxLayout()
+        second_four_buttons.addWidget(self.basic_functions['median'])
+        second_four_buttons.addWidget(self.basic_functions['mod'])
+        second_four_buttons.addWidget(self.basic_functions['max'])
+        second_four_buttons.addWidget(self.basic_functions['min'])
+
+        third_four_buttons = QHBoxLayout()
+        third_four_buttons.addWidget(self.operators['('])
+        third_four_buttons.addWidget(self.operators[')'])
+        third_four_buttons.addWidget(self.basic_functions['sum'])
+        third_four_buttons.addWidget(self.operators['/'])
+
+        fourth_four_buttons = QHBoxLayout()
+        fourth_four_buttons.addWidget(self.numbers['7'])
+        fourth_four_buttons.addWidget(self.numbers['8'])
+        fourth_four_buttons.addWidget(self.numbers['9'])
+        fourth_four_buttons.addWidget(self.operators['x'])
+
+        fifth_four_buttons = QHBoxLayout()
+        fifth_four_buttons.addWidget(self.numbers['4'])
+        fifth_four_buttons.addWidget(self.numbers['5'])
+        fifth_four_buttons.addWidget(self.numbers['6'])
+        fifth_four_buttons.addWidget(self.operators['-'])
+
+        sixth_four_buttons = QHBoxLayout()
+        sixth_four_buttons.addWidget(self.numbers['1'])
+        sixth_four_buttons.addWidget(self.numbers['2'])
+        sixth_four_buttons.addWidget(self.numbers['3'])
+        sixth_four_buttons.addWidget(self.operators['+'])
+
+        seventh_four_buttons = QHBoxLayout()
+        seventh_four_buttons.addWidget(self.operators['+/-'])
+        seventh_four_buttons.addWidget(self.numbers['0'])
+        seventh_four_buttons.addWidget(self.operators['.'])
+        seventh_four_buttons.addWidget(self.operators['='])
+
+        self.addWidget(self.create_vector)
+        self.addLayout(first_two_buttons)
+        self.addLayout(second_four_buttons)
+        self.addLayout(third_four_buttons)
+        self.addLayout(fourth_four_buttons)
+        self.addLayout(fifth_four_buttons)
+        self.addLayout(sixth_four_buttons)
+        self.addLayout(seventh_four_buttons)
+
+
+    def _open_dialog(self,signal):
         self.dialog = Dialog()
         self.dialog.show()
+        self.dialog.closeEvent = self.dialog_return
+
+    def setto(self,func):
+        self.func = func
+
+    def dialog_return(self,event):
+        print("Returned")
+        self.func(self.dialog.vec)
+
     
 
 class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
@@ -261,14 +342,10 @@ class Dialog(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
  
-
         self.main = QVBoxLayout()
         self._configuration()
 
         self.setLayout(self.main)
-
-
-
 
     def _configuration(self):
         labelrow = QLabel("Row : ")
@@ -296,16 +373,20 @@ class Dialog(QWidget):
         row = int(self.row.text())
         col = int(self.column.text())
 
-        vec = []
+        self.vec = []
         for _ in range(row):
             tmp = []
             for _ in range(col):
                 tmp.append(float(self.line_edits[total].text()))
                 total+=1
-            vec.append(tmp)
+                
+            if row == 1: self.vec = tmp
+            else: self.vec.append(tmp)
 
-        print(vec)
+        print(self.vec)
+        
         self.close()
+
 
     
     def _create_elements_layout(self):
@@ -338,3 +419,5 @@ class Dialog(QWidget):
         self.set_elements.clicked.connect(self._set_elements)
 
         self.main.addWidget(self.set_elements)
+
+    

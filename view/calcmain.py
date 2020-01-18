@@ -56,7 +56,7 @@ class CalculatorView(QWidget):
     def updateExpression(self,expression):
         self.expression.setText(expression)
     def updateResult(self,result):
-        self.result.setText(result)
+        self.result.setText(str(result))
     def updateHistory(self,expression):
         self.history.addItem(expression)
 
