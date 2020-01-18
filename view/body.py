@@ -83,7 +83,6 @@ class BodyLayout:
     def _set_layout(self):
         pass
 
-
 class VectorCalculatorBody(QVBoxLayout, BodyLayout):
     def __init__(self):
         super().__init__()
@@ -95,10 +94,7 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
             'median':self.median,
             'mod':self.mod,
             'max':self.max,
-            'min':self.min,
-            'CE':self.clear,
-            '<-':self.backspace,
-
+            'min':self.min
         }
 
         self._set_layout()
@@ -114,16 +110,15 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         self.mod = QPushButton("mod")
         self.max = QPushButton('max')
         self.min = QPushButton('min')
-        self.clear = QPushButton('CE')
-        self.backspace = QPushButton('<-')
+ 
         
         return super()._create_buttons()
 
     def _set_layout(self):
 
         first_two_buttons = QHBoxLayout()
-        first_two_buttons.addWidget(self.basic_functions['CE'])
-        first_two_buttons.addWidget(self.basic_functions['<-'])
+        first_two_buttons.addWidget(self.operators['CE'])
+        first_two_buttons.addWidget(self.operators['<-'])
 
         second_four_buttons = QHBoxLayout()
         second_four_buttons.addWidget(self.basic_functions['median'])
@@ -186,14 +181,22 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
             # Just close
             pass
     
-
 class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
     def __init__(self):
         super().__init__()
         self._create_buttons()
 
         self.basic_functions = {
-
+            'mean':self.mean,
+            'std':self.std,
+            'mod':self.mod,
+            'median':self.median,
+            'max':self.max,
+            'min':self.min,
+            'inv':self.inv,
+            'T':self.transpoze,
+            'det':self.det,
+            'sum':self.sum
         }
 
         self._set_layout()
@@ -203,10 +206,81 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         self.create_vector = QPushButton("Create Vector")
         self.create_vector.clicked.connect(self._open_dialog)
 
+        self.mean = QPushButton("mean")
+        self.std = QPushButton("std")
+        self.mod = QPushButton("mod")
+        self.median = QPushButton("median")
+        self.max = QPushButton("max")
+        self.min = QPushButton("min")
+        self.inv = QPushButton("inv")
+        self.transpoze = QPushButton("T")
+        self.det = QPushButton("det")
+        self.sum = QPushButton("sum")
         return super()._create_buttons()
 
     def _set_layout(self):
+
+        
+
+        first_four_buttons = QHBoxLayout()
+        first_four_buttons.addWidget(self.basic_functions['mean'])
+        first_four_buttons.addWidget(self.basic_functions['std'])
+        first_four_buttons.addWidget(self.basic_functions['mod'])
+        first_four_buttons.addWidget(self.basic_functions['median'])
+
+        eighth_third_buttons = QHBoxLayout()
+        eighth_third_buttons.addWidget(self.basic_functions['sum'])
+        eighth_third_buttons.addWidget(self.operators["CE"])
+        eighth_third_buttons.addWidget(self.operators["<-"])
+
+
+        second_four_buttons = QHBoxLayout()
+        second_four_buttons.addWidget(self.basic_functions['max'])
+        second_four_buttons.addWidget(self.basic_functions['min'])
+        second_four_buttons.addWidget(self.basic_functions['inv'])
+        second_four_buttons.addWidget(self.basic_functions['T'])
+
+        third_four_buttons = QHBoxLayout()
+        third_four_buttons.addWidget(self.operators['('])
+        third_four_buttons.addWidget(self.operators[')'])
+        third_four_buttons.addWidget(self.basic_functions['det'])
+        third_four_buttons.addWidget(self.operators['/'])
+
+        fourth_four_buttons = QHBoxLayout()
+        fourth_four_buttons.addWidget(self.numbers['7'])
+        fourth_four_buttons.addWidget(self.numbers['8'])
+        fourth_four_buttons.addWidget(self.numbers['9'])
+        fourth_four_buttons.addWidget(self.operators['x'])
+
+        fifth_four_buttons = QHBoxLayout()
+        fifth_four_buttons.addWidget(self.numbers['4'])
+        fifth_four_buttons.addWidget(self.numbers['5'])
+        fifth_four_buttons.addWidget(self.numbers['6'])
+        fifth_four_buttons.addWidget(self.operators['-'])
+
+        sixth_four_buttons = QHBoxLayout()
+        sixth_four_buttons.addWidget(self.numbers['1'])
+        sixth_four_buttons.addWidget(self.numbers['2'])
+        sixth_four_buttons.addWidget(self.numbers['3'])
+        sixth_four_buttons.addWidget(self.operators['+'])
+
+        seventh_four_buttons = QHBoxLayout()
+        seventh_four_buttons.addWidget(self.operators['+/-'])
+        seventh_four_buttons.addWidget(self.numbers['0'])
+        seventh_four_buttons.addWidget(self.operators['.'])
+        seventh_four_buttons.addWidget(self.operators['='])
+
         self.addWidget(self.create_vector)
+        self.addLayout(first_four_buttons)
+        self.addLayout(eighth_third_buttons)
+        self.addLayout(second_four_buttons)
+        self.addLayout(third_four_buttons)
+        self.addLayout(fourth_four_buttons)
+        self.addLayout(fifth_four_buttons)
+        self.addLayout(sixth_four_buttons)
+        self.addLayout(seventh_four_buttons)
+
+
         return super()._set_layout()
 
 
@@ -224,9 +298,6 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         except:
             # just close
             pass
-
-
-    
 
 class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
     
@@ -404,7 +475,7 @@ class Dialog(QWidget):
                 tmp.append(float(self.line_edits[total].text()))
                 total+=1
                 
-            if row == 1: self.vec = tmp
+            if self.isVector1d: self.vec = tmp
             else: self.vec.append(tmp)
 
         print(self.vec)
