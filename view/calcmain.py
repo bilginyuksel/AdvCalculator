@@ -34,7 +34,7 @@ Vector2DCalculatorBody)
 from controls import CalculatorController
 from utils.component import *
 from utils.tokenizer import Tokenizer
-
+# from utils.dbconnector import CalculatorDBManager
 
 
 class CalculatorView(QWidget):

@@ -1,31 +1,33 @@
+import sqlite3
+
 class DBManager:
 
     def __init__(self,dbname):
         self.dbname = dbname
         print(self.dbname)
 
+        self.conn = sqlite3.connect(self.dbname)
         """
         if there is no db with named dbname.db here.
             self.create_db()
 
         """
-    
+        
+
     def add(self,*args):
         print("Add..")
-        raise NotImplementedError
+        pass
 
-    def delete(self,*args):
-        raise NotImplementedError
+    def delete(self,arg):
+        pass
 
-    def update(self,*args):
-        raise NotImplementedError
-
-    def create_db(self,*args):
-        raise NotImplementedError
+    def create_db(self):
+        pass
 
     def __enter__(self):
         # Open db process
-        print("Connected...")
+        self.conn = sqlite3.connect(self.dbname)
+
         return self
 
     def __exit__(self,exc_type,exc_value,tb):
@@ -33,6 +35,7 @@ class DBManager:
         if tb is None:
             # No exception
             # commit db
+            self.conn.close()
             print("Exitted...")
         else:
             # Exception occurred
@@ -43,11 +46,32 @@ class DBManager:
         
 # fill inside this class bashir.
 class CalculatorDBManager(DBManager):
-    pass
-        
 
-db_conn = DBManager("file_name.db")
+    def __init__(self, dbname):
+        super().__init__(dbname)
+        self.create_db()
+    
+    def create_db(self):
+        self.conn.execute("""
+        CREATE TABLE IF NOT EXISTS Formulas(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        formula TEXT NOT NULL,
+        type TEXT NOT NULL)""")
+        self.conn.close()
+        return super().create_db()
+
+    def add(self, *args):
+        print(*args)
+        print(args)
+        self.conn.execute("INSERT INTO Formulas(formula,type) VALUES('{0}','{1}')".format(*args))
+        self.conn.commit()
+        return super().add(*args)
+
+    def delete(self, arg):
+        self.conn.execute("DELETE FROM Formulas WHERE id={0}".format(arg))
+        self.conn.commit()
+        return super().delete(arg)
+
+   
+db_conn = CalculatorDBManager("formula.db")
 with db_conn as db:
-    db.add()
-    #... operations
-    pass
+    db.delete(2)
