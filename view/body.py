@@ -170,7 +170,7 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         self.addLayout(seventh_four_buttons)
 
 
-    def _open_dialog(self,signal):
+    def _open_dialog(self):
         self.dialog = Dialog()
         self.dialog.show()
         self.dialog.closeEvent = self.dialog_return
@@ -189,11 +189,33 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         super().__init__()
         self._create_buttons()
 
+        self.basic_functions = {
+
+        }
+
+        self._set_layout()
+
+
+    def _open_dialog(self):
+        self.dialog = Dialog()
+        self.dialog.show()
+        self.dialog.closeEvent = self.dialog_return
+
+    def setto(self,func):
+        self.func = func
+
+    def dialog_return(self,event):
+        print("Returned")
+        self.func(self.dialog.vec)
 
     def _create_buttons(self):
+        self.create_vector = QPushButton("Create Vector")
+        self.create_vector.clicked.connect(self._open_dialog)
+
         return super()._create_buttons()
 
     def _set_layout(self):
+        self.addWidget(self.create_vector)
         return super()._set_layout()
 
 class ComplexCalculatorBody(QVBoxLayout, BodyLayout):

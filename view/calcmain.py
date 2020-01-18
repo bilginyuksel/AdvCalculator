@@ -82,11 +82,11 @@ class CalculatorView(QWidget):
         self.expression = QLineEdit("0")
         self.expression.setReadOnly(True)
         self.expression.setAlignment(Qt.AlignRight)
-        self.expression.setFont(QFont("Consolas",13,QFont.Bold))
+        self.expression.setFont(QFont("Consolas",10,QFont.ExtraLight))
         
         self.result = QLabel('0')
         self.result.setAlignment(Qt.AlignRight)
-        self.result.setFont(QFont("Consolas",13))
+        self.result.setFont(QFont("Consolas",10,QFont.Bold))
 
         self.head.addWidget(self.expression)
         self.head.addWidget(self.result)
