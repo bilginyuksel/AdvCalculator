@@ -9,7 +9,12 @@ class RealFunctions:
             "n!":self.factorial,
             "ln":self.ln,
             "|x|":self.fabs,
-            "2^x":self.twoPowerOfX,
+            "2^x":self.xPowerOfTwo,
+            "x^2":self.twoPowerOfx,
+            "1/x":self.oneDivideToX,
+            "exp":self.exp,
+            "x^3":self.threePowerOfx,
+            "10^x":self.xPowerOfTen,
         }
     def sin(self,val):
         return math.sin(val)
@@ -23,7 +28,18 @@ class RealFunctions:
         return math.log1p(val)
     def fabs(self,val):
         return math.fabs(val)
-    def twoPowerOfX(self,val):
+    def xPowerOfTwo(self,val):
         return math.pow(2,val)
+    def twoPowerOfx(self,val):
+        return math.pow(val,2)
+    def oneDivideToX(self,val):
+        return 1/val
+    def exp(self,val):
+        return math.exp(val)
+    def threePowerOfx(self,val):
+        return math.pow(val,3)
+    def xPowerOfTen(self,val):
+        return math.pow(10,val)
+
 
 
