@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout,QLineEdit
+from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout,QLineEdit, QDialog
 from PyQt5.QtCore import Qt
 import sys
 
@@ -20,6 +20,11 @@ class BodyLayout:
             '7':self.btn_seven,
             '8':self.btn_eight,
             '9':self.btn_nine
+        }
+
+        self.special_numbers = {
+            'pi':self.btn_pi,
+            'e':self.btn_e
         }
 
         self.operators = {
@@ -51,6 +56,10 @@ class BodyLayout:
         self.btn_eight = QPushButton("8")
         self.btn_nine = QPushButton("9")
 
+        # @Special Numbers
+        self.btn_pi = QPushButton("pi")
+        self.btn_e = QPushButton('e')
+
     def _create_operators(self):
         # @Operators
         self.btn_add = QPushButton('+')
@@ -65,6 +74,7 @@ class BodyLayout:
         self.btn_clear = QPushButton('CE')
         self.btn_backspace = QPushButton('<-')
 
+
     def _create_buttons(self):
         pass
 
@@ -75,16 +85,22 @@ class BodyLayout:
 class VectorCalculatorBody(QVBoxLayout, BodyLayout):
     def __init__(self):
         super().__init__()
+        
         self._create_buttons()
-
+        self._set_layout()
 
     def _create_buttons(self):
-        self.open_dialog = QPushButton(self,"Create Vector")
-        self.addWidget()
+        self.create_vector = QPushButton("Create Vector")
+        self.create_vector.clicked.connect(self._open_dialog)
         return super()._create_buttons()
 
     def _set_layout(self):
+        self.addWidget(self.create_vector)
         return super()._set_layout()
+
+    def _open_dialog(self):
+        self.dialog = Dialog()
+        self.dialog.show()
     
 
 class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
@@ -120,11 +136,6 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
         self._create_buttons()
 
 
-        self.special_numbers = {
-            'pi':self.btn_pi,
-            'e':self.btn_e
-        }
-
         self.basic_functions = {
             '1/x':self.btn_onedivx,
             '|x|':self.btn_abs,
@@ -152,9 +163,7 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
         self._set_layout()
 
     def _create_buttons(self):
-        # @Special Numbers
-        self.btn_pi = QPushButton("pi")
-        self.btn_e = QPushButton('e')
+        
 
         # @Basic Functions
         self.btn_onedivx = QPushButton("1/x")
@@ -251,10 +260,13 @@ class Dialog(QWidget):
     
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-
+ 
 
         self.main = QVBoxLayout()
+        self._configuration()
+
         self.setLayout(self.main)
+
 
 
 
@@ -263,14 +275,66 @@ class Dialog(QWidget):
         labelcol = QLabel("Col : ")
         self.row = QLineEdit()
         self.column = QLineEdit()
+        self.create_elements = QPushButton("Create Elements")
+        self.create_elements.clicked.connect(self._create_elements_layout)
 
         hbox1 = QHBoxLayout()
-        hbox.addWidget(labelrow)
-        hbox.addWidget(self.row)
+        hbox1.addWidget(labelrow)
+        hbox1.addWidget(self.row)
 
         hbox2 = QHBoxLayout()
-        hbox.addWidget(labelcol)
-        hbox.addWidget(self.column)
+        hbox2.addWidget(labelcol)
+        hbox2.addWidget(self.column)
 
         self.main.addLayout(hbox1)
         self.main.addLayout(hbox2)
+        self.main.addWidget(self.create_elements)
+
+    def _set_elements(self):
+        # Get the data from line edits
+        total = 0
+        row = int(self.row.text())
+        col = int(self.column.text())
+
+        vec = []
+        for _ in range(row):
+            tmp = []
+            for _ in range(col):
+                tmp.append(float(self.line_edits[total].text()))
+                total+=1
+            vec.append(tmp)
+
+        print(vec)
+        self.close()
+
+    
+    def _create_elements_layout(self):
+        # use assert here.
+
+        row = int(self.row.text())
+        col = int(self.column.text())
+
+        self.line_edits = {}
+        labels = {}
+
+        total = 0
+        for i in range(1,row+1):
+            for j in range(1,col+1):
+                self.line_edits[total] = QLineEdit()
+                labels[total] = QLabel(str(i)+"x"+str(j)+":")
+                total+=1
+
+        total = 0
+        for _ in range(row):
+            hbox = QHBoxLayout()
+            for _ in range(col):
+                hbox.addWidget(labels[total])
+                hbox.addWidget(self.line_edits[total])
+                total += 1
+            
+            self.main.addLayout(hbox)
+
+        self.set_elements = QPushButton("Set Elements")
+        self.set_elements.clicked.connect(self._set_elements)
+
+        self.main.addWidget(self.set_elements)

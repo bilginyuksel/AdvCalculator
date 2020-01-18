@@ -33,6 +33,8 @@ class CalculatorController:
         self._view.body.operators['CE'].clicked.connect(self._op_clear)
 
 
+        self._view.body.special_numbers['pi'].clicked.connect(partial(self._num_any,str(22/7)))
+        # self._view.body.special_numbers['e'].clicked.connect(partial(self._num_any,str(10/10/10)))
         # @@Basic Functions
         # Bad usage...
         if self._model.ttype == "Scientific":
