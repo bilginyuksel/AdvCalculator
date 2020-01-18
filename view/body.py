@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication,QWidget,QVBoxLayout,QLabel,QPushButton,QHBoxLayout,QLineEdit, QDialog
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 import sys
 from functools import partial
 
@@ -179,9 +180,11 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
         self.func = func
 
     def dialog_return(self,event):
-        print("Returned")
-        self.func(self.dialog.vec)
-
+        try:
+            self.func(self.dialog.vec)
+        except:
+            # Just close
+            pass
     
 
 class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
@@ -205,8 +208,11 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         self.func = func
 
     def dialog_return(self,event):
-        print("Returned")
-        self.func(self.dialog.vec)
+        try:
+            self.func(self.dialog.vec)
+        except:
+            # just close
+            pass
 
     def _create_buttons(self):
         self.create_vector = QPushButton("Create Vector")
@@ -218,18 +224,7 @@ class Vector2DCalculatorBody(QVBoxLayout, BodyLayout):
         self.addWidget(self.create_vector)
         return super()._set_layout()
 
-class ComplexCalculatorBody(QVBoxLayout, BodyLayout):
-    
-    def __init__(self):
-        super().__init__()
-        self._create_buttons()
 
-
-    def _create_buttons(self):
-        return super()._create_buttons()
-
-    def _set_layout(self):
-        return super()._set_layout()
     
 
 class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
@@ -365,7 +360,9 @@ class Dialog(QWidget):
         super().__init__(parent=parent)
         self.isVector1d = isVector1d
         self.main = QVBoxLayout()
-        self.setWindowTitle("Create Vector")
+        self.setWindowIcon(QIcon("assets/vector1d.png"))
+        self.setWindowTitle("Vector")
+        self.setMinimumWidth(300)
         self._configuration()
 
         self.setLayout(self.main)

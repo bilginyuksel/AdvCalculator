@@ -33,7 +33,7 @@ class CalculatorController:
         self._view.body.operators['CE'].clicked.connect(self._op_clear)
 
 
-        if not self._model.ttype == "Scientific" and not self._model.ttype=="Complex":
+        if not self._model.ttype == "Scientific" :
             self._view.body.setto(self._num_any)
 
 
@@ -41,9 +41,8 @@ class CalculatorController:
         # self._view.body.special_numbers['e'].clicked.connect(partial(self._num_any,str(10/10/10)))
         # @@Basic Functions
         # Bad usage...
-        if not self._model.ttype == "Complex":
-            for i in self._view.body.basic_functions.keys():
-                self._view.body.basic_functions[i].clicked.connect(partial(self._func_basic,i))
+        for i in self._view.body.basic_functions.keys():
+            self._view.body.basic_functions[i].clicked.connect(partial(self._func_basic,i))
 
     
    

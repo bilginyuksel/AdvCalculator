@@ -30,8 +30,7 @@ QFont)
 from functools import partial
 from body import (ScientificCalculatorBody,
 VectorCalculatorBody,
-Vector2DCalculatorBody,
-ComplexCalculatorBody)
+Vector2DCalculatorBody)
 from controls import CalculatorController
 from utils.component import *
 from utils.tokenizer import Tokenizer
@@ -46,8 +45,7 @@ class CalculatorView(QWidget):
         self.CTYPE = {
             "SCIENTIFIC":ScientificCalculatorBody(),
             "VECTOR 1D":VectorCalculatorBody(),
-            "VECTOR 2D":Vector2DCalculatorBody(),
-            "COMPLEX":ComplexCalculatorBody()
+            "VECTOR 2D":Vector2DCalculatorBody()
         }
         
         self.tab_result = ctype
@@ -113,7 +111,6 @@ class CalculatorView(QWidget):
 class GeneralCalcView(QTabWidget):
 
     _scientific = "Scientific"
-    _complex = "Complex"
     _vector1d = "Vector 1d"
     _vector2d = "Vector 2d"
 
@@ -125,12 +122,10 @@ class GeneralCalcView(QTabWidget):
         self.setWindowTitle("Calculator")
         
         sci = CalculatorView(ctype=GeneralCalcView._scientific)
-        comp = CalculatorView(ctype=GeneralCalcView._complex)
         vec1 = CalculatorView(ctype=GeneralCalcView._vector1d)
         vec2 = CalculatorView(ctype=GeneralCalcView._vector2d)
 
         sci_controller  = CalculatorController(sci, InputController(GeneralCalcView._scientific),Tokenizer("real"))
-        comp_controller = CalculatorController(comp, InputController(GeneralCalcView._complex))
         vec1_controller = CalculatorController(vec1, InputController(GeneralCalcView._vector1d))
         vec2_controller = CalculatorController(vec2, InputController(GeneralCalcView._vector2d))
 
@@ -138,7 +133,6 @@ class GeneralCalcView(QTabWidget):
         self.addTab(sci, QIcon("assets/calculator.png"), GeneralCalcView._scientific)
         self.addTab(vec1, QIcon("assets/vector1d.png"), GeneralCalcView._vector1d)
         self.addTab(vec2, QIcon("assets/vector2d.png"), GeneralCalcView._vector2d)
-        self.addTab(comp, QIcon("assets/complex.png"), GeneralCalcView._complex)
    
         
 
