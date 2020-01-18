@@ -15,7 +15,5 @@ class Vector1dOperator(BaseOperator):
     def multiply(self,val1,val2):
         if not isinstance(val1,list) or not isinstance(val2,list):
             return np.multiply(val1,val2)
-        elif len(val1)==1 or len(val2)==1:
-            return np.multiply(val1,val2)
-        elif len(val1)==len(val2):
+        elif (len(val1)==1 or len(val2)==1) or (len(val1)==len(val2)):
             return np.multiply(val1,val2)

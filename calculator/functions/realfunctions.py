@@ -6,6 +6,7 @@ class RealFunctions:
             "sin":self.sin,
             "cos":self.cos,
             "tan":self.tan,
+            "cot":self.cot,
             "n!":self.factorial,
             "ln":self.ln,
             "|x|":self.fabs,
@@ -22,6 +23,8 @@ class RealFunctions:
         return math.cos(val)
     def tan(self,val):
         return math.tan(val)
+    def cot(self,val):
+        return math.cos(val)/math.sin(val)
     def factorial(self,val):
         return math.factorial(val)
     def ln(self,val):
