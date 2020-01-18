@@ -171,7 +171,7 @@ class VectorCalculatorBody(QVBoxLayout, BodyLayout):
 
 
     def _open_dialog(self):
-        self.dialog = Dialog()
+        self.dialog = Dialog(isVector1d=True)
         self.dialog.show()
         self.dialog.closeEvent = self.dialog_return
 
@@ -361,10 +361,11 @@ class ScientificCalculatorBody(QVBoxLayout, BodyLayout):
 
 class Dialog(QWidget):
     
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, isVector1d = False):
         super().__init__(parent=parent)
- 
+        self.isVector1d = isVector1d
         self.main = QVBoxLayout()
+        self.setWindowTitle("Create Vector")
         self._configuration()
 
         self.setLayout(self.main)
@@ -372,7 +373,12 @@ class Dialog(QWidget):
     def _configuration(self):
         labelrow = QLabel("Row : ")
         labelcol = QLabel("Col : ")
+    
         self.row = QLineEdit()
+        if self.isVector1d:
+            self.row.setText("1")
+            self.row.setDisabled(True)
+        
         self.column = QLineEdit()
         self.create_elements = QPushButton("Create Elements")
         self.create_elements.clicked.connect(self._create_elements_layout)
