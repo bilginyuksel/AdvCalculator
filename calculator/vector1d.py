@@ -6,20 +6,12 @@ class Vector1dOperator(BaseOperator):
     def add(self,val1,val2):
         if(len(val1)==len(val2)):
             return np.add(val1,val2)
-        else:
-            return "Matrisler  Aynı boyut olmalı"
     def substract(self,val1,val2):
         if(len(val1)==len(val2)):
             return np.subtract(val1,val2)
-        else:
-            return "Matrisler  Aynı boyut olmalı"
     def divide(self,val1,val2):
-        if not isinstance(val1,list) and not isinstance(val2,list):
-            return "Bir değerin matris olması gerekiyor."
         if not isinstance(val1,list) or not isinstance(val2,list):
             return np.divide(val1,val2)
-        else:
-            return "2 Matris Bölünemez.."
     def multiply(self,val1,val2):
         if not isinstance(val1,list) or not isinstance(val2,list):
             return np.multiply(val1,val2)
@@ -27,5 +19,3 @@ class Vector1dOperator(BaseOperator):
             return np.multiply(val1,val2)
         elif len(val1)==len(val2):
             return np.multiply(val1,val2)
-        else:
-            return "Matris Çarpım Hatası"

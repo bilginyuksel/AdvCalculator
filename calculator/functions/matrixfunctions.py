@@ -1,6 +1,12 @@
-import numpy as np
+import numpy 
 
-matrix = [[2,3],[3,-2]]
-matrix = np.array(matrix)
-matrix2 = np.array([1,2],[2,4])
-np.linalg.inv(matrix)
+class Vector1dFunctions:
+    def __init__(self):
+        self.functions = {
+            "median":self.median
+        }
+    def median(self,val):
+        return numpy.median(val)
+
+
+
