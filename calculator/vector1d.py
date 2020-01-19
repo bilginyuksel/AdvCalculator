@@ -1,5 +1,6 @@
 from .base import BaseOperator
 import numpy as np
+
 class Vector1dOperator(BaseOperator):
     def __init__(self):
         super().__init__()
@@ -17,3 +18,24 @@ class Vector1dOperator(BaseOperator):
             return np.multiply(val1,val2)
         elif (len(val1)==1 or len(val2)==1) or (len(val1)==len(val2)):
             return np.multiply(val1,val2)
+
+class Vector1dFunctions:
+    def __init__(self):
+        self.functions = {
+            "median":self.median,
+            "mod":self.mod,
+            "max":self.maxOfMatrix,
+            "min":self.minOfMatrix,
+            "sum":self.sumOfElements,
+        }
+    def median(self,val):
+        return np.median(val)
+    def mod(self,val):
+        bincount = np.bincount(val)
+        return np.argmax(bincount)
+    def maxOfMatrix(self,val):
+        return np.amax(val)
+    def minOfMatrix(self,val):
+        return np.amin(val)
+    def sumOfElements(self,val):
+        return np.sum(val)

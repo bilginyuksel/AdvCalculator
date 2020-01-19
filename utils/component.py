@@ -1,4 +1,20 @@
 
+"""
+---------------------
+[3, +, sin(120)]
+[<class ComponentValue>, <class ComponentOperator>, <class ComponentFunction>]
+if isinstance(ComponentValue):
+    a = comp.value -> ([1,2,3,4],53,[[1,2],[2,3]],5+3i)
+    Operator(comp.type).compute(val1,val2) -> 'complex','vector','real'
+
+ComponentFunction('sin','3+5*20') -> basic
+    comp.expression = comp.resolve(comp.expression)
+    funcManager.solve(comp.func,comp.expression)
+ComponentFunction('mod',['5','7']) -> advanced
+ComponentFunction('x^y',[5,3]) -> advanced = 125
+
+"""
+
 class ComponentFunction:
     
     def __init__(self,fun,val):
@@ -248,60 +264,3 @@ class InputController:
         self.display.clear()
 
 
-# inp = InputController()
-
-# inp.display.append(ComponentFunction("abs","10/32*5"))
-# for i in inp.display:
-#     print(i)
-
-
-"""
-'3' '+' 'sin(5)' '/' '10'
-Run Parser ----
-co = '3', '+', 'sin-5', '/', '10'
-
-ifFunction...
-content.split('-')
-list[0] -> sin
-list[1] -> math process.
-
-tokenize = Tokenizer('real')
-result = tokenize.tokenize(co)
-
-result.
-
-
-isFunction() ->  True
-content = sin(5)
-solve content RegExp -> ....
---- Function type 2 parameter -> (x^y)s
-
-
-priority---
-value - operator
-if function....
-do different kind of process.
-return Value.. add value stack.
-
-
-
-postfix
---- when stack pop's operator
-do the process.
-val1, val2, process.
-
-
----------------------
-[3, +, sin(120)]
-[<class ComponentValue>, <class ComponentOperator>, <class ComponentFunction>]
-if isinstance(ComponentValue):
-    a = comp.value -> ([1,2,3,4],53,[[1,2],[2,3]],5+3i)
-    Operator(comp.type).compute(val1,val2) -> 'complex','vector','real'
-
-ComponentFunction('sin','3+5*20') -> basic
-    comp.expression = comp.resolve(comp.expression)
-    funcManager.solve(comp.func,comp.expression)
-ComponentFunction('mod',['5','7']) -> advanced
-ComponentFunction('x^y',[5,3]) -> advanced = 125
-
-"""

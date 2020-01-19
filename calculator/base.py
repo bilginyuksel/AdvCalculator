@@ -44,11 +44,11 @@ class BaseOperator:
 
 
 
-class Formula:
-    def __init__(self,*args):
-        super().__init__()
-        self.variables, self.operators = tokenize(*args)
+# class Formula:
+#     def __init__(self,*args):
+#         super().__init__()
+#         self.variables, self.operators = tokenize(*args)
 
-    def tokenize(self,*args):
-        pass
+#     def tokenize(self,*args):
+#         pass
 

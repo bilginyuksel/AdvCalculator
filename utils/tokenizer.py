@@ -1,14 +1,12 @@
 from .component import *
 import sys
 sys.path.append("..")
-from calculator.real import RealOperator
-from calculator.vector1d import Vector1dOperator
-from calculator.vector2d import Vector2dOperator
+from calculator.real import RealOperator,RealFunctions
+from calculator.vector1d import Vector1dOperator,Vector1dFunctions
+from calculator.vector2d import Vector2dOperator,Vector2dFunctions
 from calculator.base import OperatorManager,FunctionManager
-from calculator.functions.realfunctions import RealFunctions
-from calculator.functions.matrixfunctions import Vector1dFunctions,Vector2dFunctions
 
-def real(content,op_solver, fun_solver):
+def xxsolver(content,op_solver, fun_solver):
     valStack = []
     opStack = []
     op_manager = OperatorManager(op_solver)
@@ -17,7 +15,7 @@ def real(content,op_solver, fun_solver):
         if(isinstance(item,ComponentValue)):
             valStack.append(item.val)
         elif(isinstance(item,ComponentFunction)):
-            funcVal = real(item.expression,op_solver,fun_solver)
+            funcVal = xxsolver(item.expression,op_solver,fun_solver)
             valStack.append(fun_manager.solve(funcVal,item.fun))
         elif(isinstance(item,ComponentParanthesis)):
             if(item.paranthesis== ComponentParanthesis._start):
@@ -65,5 +63,5 @@ class Tokenizer:
         # Maybe do some controls here.
         solver = self.solvers[self.tokenizer_type]
         fun_solver = self.fun_solvers[self.tokenizer_type]
-        func = real
+        func = xxsolver
         return func(content,solver,fun_solver)
