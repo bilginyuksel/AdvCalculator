@@ -4,7 +4,7 @@ from functools import partial
 
 class CalculatorController:
     
-    def __init__(self, view, model,tokenizer=None):
+    def __init__(self, view, model,tokenizer):
         self._view = view
         self._model = model
         self.tokenizer = tokenizer
