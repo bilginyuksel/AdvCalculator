@@ -3,9 +3,10 @@ import sys
 sys.path.append("..")
 from calculator.real import RealOperator
 from calculator.vector1d import Vector1dOperator
+from calculator.vector2d import Vector2dOperator
 from calculator.base import OperatorManager,FunctionManager
 from calculator.functions.realfunctions import RealFunctions
-from calculator.functions.matrixfunctions import Vector1dFunctions
+from calculator.functions.matrixfunctions import Vector1dFunctions,Vector2dFunctions
 
 def real(content,op_solver, fun_solver):
     valStack = []
@@ -52,12 +53,12 @@ class Tokenizer:
         self.solvers = {
             "real":RealOperator(),
             "vec1":Vector1dOperator(),
-            "vec2":None
+            "vec2":Vector2dOperator()
         }
         self.fun_solvers = {
             "real":RealFunctions(),
             "vec1":Vector1dFunctions(),
-            "vec2":None
+            "vec2":Vector2dFunctions()
         }
 
     def tokenize(self,content):
