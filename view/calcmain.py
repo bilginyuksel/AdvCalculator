@@ -74,17 +74,18 @@ class CalculatorView(QWidget):
         self.setLayout(self.main)
 
     def __set_window_config(self):
-        self.setFont(QFont("Times",9))
-        
+        # self.setFont(QFont("default",  9))
+        pass
+    
     def __set_head(self):
         self.expression = QLineEdit("0")
         self.expression.setReadOnly(True)
         self.expression.setAlignment(Qt.AlignRight)
-        self.expression.setFont(QFont("Consolas",10,QFont.ExtraLight))
+        # self.expression.setFont(QFont("default",10,QFont.ExtraLight))
         
         self.result = QLabel('0')
         self.result.setAlignment(Qt.AlignRight)
-        self.result.setFont(QFont("Consolas",10,QFont.Bold))
+        # self.result.setFont(QFont("default",10,QFont.Bold))
 
         self.head.addWidget(self.expression)
         self.head.addWidget(self.result)
@@ -102,7 +103,7 @@ class CalculatorView(QWidget):
 
     def __set_left(self):
         label = QLabel(self.tab_result)
-        label.setFont(QFont("default",10))
+        # label.setFont(QFont("default",10))
         self.left.addWidget(label)
         self.left.addLayout(self.head)
         self.left.addLayout(self.body)
@@ -116,7 +117,7 @@ class GeneralCalcView(QTabWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.setFont(QFont("Times",9))
+        # self.setFont(QFont("default", 9))
         self.setWindowOpacity(1)
         self.setWindowIcon(QIcon("assets/calculator.png"))
         self.setWindowTitle("Calculator")
