@@ -18,4 +18,4 @@ AdvCalculator can calculate Scientific, 1D vector and 2D vector expressions. You
 <img src="view/assets/vecc.png">
 
 <h3>Vec2D Mode</h3>
-<img src="view/assets/vecc2d.png">
+<img src="view/assets/2dvecc.png">
