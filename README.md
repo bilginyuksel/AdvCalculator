@@ -10,3 +10,12 @@ AdvCalculator can calculate Scientific, 1D vector and 2D vector expressions. You
 >> cd view/
 >> python calcmain.py
 ```
+
+<h3>Scientific Mode</h3>
+<img src="view/assets/sc.png">
+
+<h3>Vec1D Mode</h3>
+<img src="view/assets/vecc.png">
+
+<h3>Vec2D Mode</h3>
+<img src="view/assets/vecc2d.png">
